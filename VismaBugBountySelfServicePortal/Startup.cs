@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
@@ -12,6 +13,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using VismaBugBountySelfServicePortal.Base;
+using VismaBugBountySelfServicePortal.Helpers;
+using VismaBugBountySelfServicePortal.Services;
 
 namespace VismaBugBountySelfServicePortal
 {
@@ -19,11 +22,12 @@ namespace VismaBugBountySelfServicePortal
     {
         private IConfiguration Configuration { get; }
         private readonly AppBuilder _apiBuilder;
-
+        private IApplicationBuilder _app;
         public Startup(IConfiguration configuration, ILoggerFactory loggerFactory)
         {
             Configuration = configuration;
             ILogger logger = loggerFactory.CreateLogger<Startup>();
+
             logger.LogInformation("Application Started");
             _apiBuilder = new AppBuilder(configuration)
                 .AddSpecifications<APIProjectSpecifications>();
@@ -46,6 +50,21 @@ namespace VismaBugBountySelfServicePortal
             }).AddCookie(options =>
                 {
                     options.AccessDeniedPath = "/Home/Unauthorized";
+                    options.Events = new CookieAuthenticationEvents
+                    {
+                        OnValidatePrincipal = context =>
+                        {
+                            var provider = _app.ApplicationServices;
+                            var scopeFactory = provider.GetRequiredService<IServiceScopeFactory>();
+                            using var scope = scopeFactory.CreateScope();
+                            var userService = scope.ServiceProvider.GetService<IUserService>();
+                            var email = context.Principal.Claims.GetEmail();
+
+                            if (!userService.IsValidSession(email).GetAwaiter().GetResult())
+                                context.RejectPrincipal();
+                            return Task.CompletedTask;
+                        }
+                    };
                 })
               .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, options =>
               {
@@ -60,8 +79,23 @@ namespace VismaBugBountySelfServicePortal
                   {
                       NameClaimType = "name"
                   };
+                  options.Events = new OpenIdConnectEvents
+                  {
+                      OnUserInformationReceived = context =>
+                      {
+                          var email = context?.User?.RootElement.GetProperty("email").GetString();
+                          if (string.IsNullOrWhiteSpace(email))
+                              throw new UnauthorizedAccessException();
+                          var provider = _app.ApplicationServices;
+                          var scopeFactory = provider.GetRequiredService<IServiceScopeFactory>();
+                          using var scope = scopeFactory.CreateScope();
+                          var userService = scope.ServiceProvider.GetService<IUserService>();
+                          userService.SaveSession(email).GetAwaiter().GetResult();
+                          return Task.CompletedTask;
+                      },
+                  };
               });
-            
+
             services.AddApplicationInsightsTelemetry();
             services.AddMvc(options => options.Filters.Add(new AuthorizeFilter())).SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
             _apiBuilder.BuildServices(services);
@@ -99,6 +133,7 @@ namespace VismaBugBountySelfServicePortal
             app.UseXXssProtection(options => options.EnabledWithBlockMode());
             app.UseXfo(options => options.SameOrigin());
             _apiBuilder.BuildApp(app, serviceProvider);
+            _app = app;
         }
     }
 }

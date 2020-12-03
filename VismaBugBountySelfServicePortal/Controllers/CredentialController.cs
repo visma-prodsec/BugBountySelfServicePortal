@@ -31,7 +31,7 @@ namespace VismaBugBountySelfServicePortal.Controllers
         public async Task<IActionResult> RequestCredentials(string selectedAsset)
         {
             var result = await _credentialService.RequestCredentials(new List<string> { selectedAsset },
-                    HackerName, User.Claims.FirstOrDefault(x => x.Type == "email")?.Value ?? "");
+                    HackerName, User.Claims.GetEmail());
             if (!string.IsNullOrWhiteSpace(result))
                 TempData["ErrorText"] = result;
             else TempData["SuccessText"] = _credentialService.SendHackerEmail() ? $"Credentials for {selectedAsset} sent by email. You can find them also in this page." : "Credentials added.";

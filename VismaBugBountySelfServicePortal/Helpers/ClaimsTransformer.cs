@@ -1,4 +1,3 @@
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
@@ -13,6 +12,7 @@ namespace VismaBugBountySelfServicePortal.Helpers
         private readonly IConfiguration _configuration;
         private readonly IUserService _userService;
         private readonly ILogger<ClaimsTransformer> _logger;
+        
 
         public ClaimsTransformer(IConfiguration configuration, IUserService userService, ILogger<ClaimsTransformer> logger)
         {
@@ -27,14 +27,14 @@ namespace VismaBugBountySelfServicePortal.Helpers
                 return principal;
             if (id.HasClaim(x => x.Type == ClaimTypes.Role) || !id.HasClaim(x => x.Type == "email"))
                 return principal;
-            var email = id.Claims.FirstOrDefault(c => c.Type == "email")?.Value ?? "";
+            var email = id.Claims.GetEmail();
 
             if (string.IsNullOrWhiteSpace(email) || !email.EndsWith(_configuration["HackerEmailDomain"]) && !email.EndsWith(_configuration["AdminEmailDomain"]))
             {
                 _logger.LogWarning($"Unauthorized user tried to logon: {email}");
                 return principal;
             }
-
+            
             var role = "";
             if (email.EndsWith(_configuration["AdminEmailDomain"]))
             {

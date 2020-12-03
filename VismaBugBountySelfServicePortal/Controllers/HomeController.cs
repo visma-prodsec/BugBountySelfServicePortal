@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using VismaBugBountySelfServicePortal.Base;
 using VismaBugBountySelfServicePortal.Helpers;
 using VismaBugBountySelfServicePortal.Models.ViewModel;
+using VismaBugBountySelfServicePortal.Services;
 
 namespace VismaBugBountySelfServicePortal.Controllers
 {
@@ -17,10 +18,12 @@ namespace VismaBugBountySelfServicePortal.Controllers
     public class HomeController : BaseController
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IUserService _userService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IUserService userService)
         {
             _logger = logger;
+            _userService = userService;
         }
 
         public IActionResult Index()
@@ -42,7 +45,7 @@ namespace VismaBugBountySelfServicePortal.Controllers
             if (path == null)
             {
                 _logger.LogError(new Exception(), "An exception occured, status code:" + statusCode);
-                return View(new ErrorViewModel {HttpStatusCode = statusCode});
+                return View(new ErrorViewModel { HttpStatusCode = statusCode });
             }
 
             // Use the information about the exception 
@@ -54,16 +57,20 @@ namespace VismaBugBountySelfServicePortal.Controllers
 
         public IActionResult Unauthorized(string returnUrl)
         {
-            _logger.LogWarning($"Unauthorized user {User?.Identity?.Name} {User?.Claims?.FirstOrDefault(x=>x.Type == "email")?.Value} tries to access {returnUrl}");
+            _logger.LogWarning($"Unauthorized user {User?.Identity?.Name} {User?.Claims?.FirstOrDefault(x => x.Type == "email")?.Value} tries to access {returnUrl}");
             return View("Unauthorized");
         }
-
+        
+        [ValidateAntiForgeryToken]
+        [HttpPost]
         public async Task Logout()
         {
             if (User?.Identity?.IsAuthenticated ?? false)
             {
                 await HttpContext.SignOutAsync("Cookies");
                 await HttpContext.SignOutAsync("OpenIdConnect");
+                var email = User.Claims.GetEmail();
+                await _userService.RemoveSession(email);
             }
         }
     }

@@ -33,7 +33,9 @@
                 @if (User.Identity.IsAuthenticated)
                 {
                     <li role="menuitem">
-                        <a asp-controller="Home" asp-action="Logout" class="log-out-link" id="nc4navLogoutButton">Logout</a>
+                        <form asp-action="Logout" asp-controller="Home" method="post" asp-antiforgery="true" id="logoutForm">
+                            <button id="nc4navLogoutButton" class="dropdown-toggle" type="submit">Logout</button>
+                        </form>
                     </li>
 
                 }

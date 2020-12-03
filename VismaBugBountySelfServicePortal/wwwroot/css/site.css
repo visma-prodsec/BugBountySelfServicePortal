@@ -138,3 +138,15 @@ span.vismaicon {
     padding-left: 5px;
     padding-right: 5px;
 }
+#nc4navLogoutButton {
+    color: white;
+    background-color: #000000;
+    background-color: rgba(0, 0, 0, 0);
+    height: 64px;
+    width: 130px;
+    font-size: 18px;
+    font-family: 'UbuntuFallback', 'Ubuntu';
+    text-align: right;
+    border: 0;
+    cursor: pointer;
+}
