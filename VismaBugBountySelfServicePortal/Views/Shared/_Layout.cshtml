@@ -1,0 +1,57 @@
+﻿@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Visma Bug Bounty Self-Service Portal</title>
+    <link rel="stylesheet" href="~/css/nc.min.css" />
+    @*<link rel="stylesheet" href="https://nc4-visma.s3.eu-north-1.amazonaws.com/latest/dist/css/nc.min.css" />*@
+    <link rel="stylesheet" href="~/css/site.css" />
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</head>
+<body>
+    <header class="navbar navbar-default" id="nc4navTopMain" role="navigation">
+        <div class="navbar-header">
+            <div class="navbar-brand dropdown">
+                <div style="float: left;">
+                    <img src="~/img/vasp_shield_white.png" alt="logo" class="logo" />
+                </div>
+                <a class="dropdown-toggle" href="#" data-toggle="dropdown" role="button" aria-expanded="false" aria-label="Visma Project Name">
+                    Visma Bug Bounty Self-Service Portal
+                </a>
+            </div>
+        </div>
+
+        <nav class="collapse navbar-collapse" aria-label="Menu">
+            <ul class="nav navbar-nav nav-tabs navbar-right first-level">
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <li role="menuitem">
+                        <a asp-controller="Home" asp-action="Logout" class="log-out-link" id="nc4navLogoutButton">Logout</a>
+                    </li>
+
+                }
+            </ul>
+        </nav>
+    </header>
+    <div id="cover"></div>
+    <div class="container">
+        <main role="main" class="main">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer">
+        <div class="container" style="text-align: center">
+            &copy; @DateTime.Now.Year - Visma - <a href="mailto:@Configuration["ContactEmail"]">Contact us</a>
+        </div>
+    </footer>
+
+</body>
+</html>

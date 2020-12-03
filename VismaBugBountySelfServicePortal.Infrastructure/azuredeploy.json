@@ -1,0 +1,494 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "appServiceName": {
+      "type": "string"
+    },
+    "location": {
+      "type": "string"
+    },
+    "resourceGroup": {
+      "type": "string"
+    },
+    "appInsightsComponentNameType": {
+      "type": "string"
+    },
+    "appInsightsComponentNameRequestSource": {
+      "type": "string"
+    },
+    "databaseServerallowAzureIps": {
+      "type": "bool",
+      "defaultValue": true
+    },
+    "databaseServerserverTags": {
+      "type": "object",
+      "defaultValue": {
+      }
+    },
+    "databaseServerName": {
+      "type": "string"
+    },
+    "databaseServerLogin": {
+      "type": "string"
+    },
+    "databaseServerPassword": {
+      "type": "securestring"
+    },
+    "databaseServerLocation": {
+      "type": "string"
+    },
+    "ipVismaSpcs": {
+      "type": "string"
+    },
+    "databaseName": {
+      "type": "string"
+    },
+    "databasePassword": {
+      "type": "securestring"
+    },
+    "adminDatabasePassword": {
+      "type": "securestring"
+    },
+    "databaseSkuTier": {
+      "type": "string"
+    },
+    "databaseSkuName": {
+      "type": "string"
+    },
+    "databaseMaxSizeBytes": {
+      "type": "int"
+    },
+    "clientSecret": {
+      "type": "securestring"
+    },
+    "appServicePlanSkuName": {
+      "type": "string"
+    },
+    "appServicePlanSkuTier": {
+      "type": "string"
+    },
+    "appServicePlanSkuFamily": {
+      "type": "string"
+    },
+    "appServicePlanSkuSize": {
+      "type": "string"
+    },
+    "keyVaultName": {
+      "type": "string"
+    },
+    "keyVaultEnabledForDeployment": {
+      "type": "bool"
+    },
+    "keyVaultEnabledForDiskEncryption": {
+      "type": "bool"
+    },
+    "keyVaultEnabledForTemplateDeployment": {
+      "type": "bool"
+    },
+    "keyVaultSkuName": {
+      "type": "string"
+    },
+    "keyVaultSkuFamily": {
+      "type": "string"
+    },
+    "logStorageAccountName": {
+      "type": "string"
+    },
+    "logStorageAccountSkuName": {
+      "type": "string"
+    },
+    "logStorageAccountSkuTier": {
+      "type": "string"
+    },
+    "eventHubNamespaceName": {
+      "type": "string"
+    },
+    "eventHubSkuName": {
+      "type": "string"
+    },
+    "eventHubSkuTier": {
+      "type": "string"
+    },
+    "eventHubSkuCapacity": {
+      "type": "int"
+    },
+    "emailPassword": {
+      "type": "securestring"
+    },
+
+    "privateProgramPassword": {
+      "type": "securestring"
+    },
+
+    "publicProgramPassword": {
+      "type": "securestring"
+    },
+    "apiKey": {
+      "type": "securestring"
+    },
+    "logCollectorPrincipalId": {
+      "type": "string",
+      "defaultValue": ""
+    }
+  },
+  "variables": {
+    "applicationInsightsName": "[concat(parameters('appServiceName'),'-Insights')]",
+    "appServicePlanName": "[concat(parameters('appServiceName'),'-HostingPlan')]",
+    "blobContainerName": "log",
+    "listAccountSasRequestContent": {
+      "signedServices": "bfqt",
+      "signedPermission": "rwdlacup",
+      "signedStart": "2018-10-01T00:00:00Z",
+      "signedExpiry": "2218-10-30T00:00:00Z",
+      "signedResourceTypes": "sco"
+    },
+    "roleAssignmentIdStorage": "[guid(concat(resourceGroup().id, parameters('logStorageAccountName'), variables('blobContainerName'), parameters('logCollectorPrincipalId')))]",
+    "roleAssignmentIdEventHub": "[guid(concat(resourceGroup().id, parameters('eventHubNamespaceName'), parameters('logCollectorPrincipalId')))]",
+    "SubscriptionId": "[concat('/subscriptions/', subscription().subscriptionId)]",
+    "RoleDefinitions": "[concat(variables('SubscriptionId'), '/providers/Microsoft.Authorization/roleDefinitions/')]",
+    "storageBlobDataReaderRoleGuid": "2a2b9908-6ea1-4ae2-8e65-a410df84e7d1",
+    "AzureEventHubsDataReceiverRole": "a638d3c7-ab3a-418d-83e6-5f17a39d4fde"
+  },
+  "resources": [
+    {
+      "location": "[parameters('location')]",
+      "name": "[variables('applicationInsightsName')]",
+      "type": "Microsoft.Insights/components",
+      "apiVersion": "2018-05-01-preview",
+      "kind": "web",
+      "tags": {
+        "[concat('hidden-link:', concat('/providers/Microsoft.Web/sites/', parameters('appServiceName')))]": "Resource"
+      },
+      "properties": {
+        "Application_Type": "[parameters('appInsightsComponentNameType')]",
+        "Flow_Type": "Bluefield",
+        "Request_Source": "[parameters('appInsightsComponentNameRequestSource')]"
+      }
+    },
+    {
+      "location": "[parameters('location')]",
+      "name": "[variables('appServicePlanName')]",
+      "type": "Microsoft.Web/serverfarms",
+      "apiVersion": "2015-08-01",
+      "sku": {
+        "name": "[parameters('appServicePlanSkuName')]",
+        "tier": "[parameters('appServicePlanSkuTier')]",
+        "family": "[parameters('appServicePlanSkuFamily')]",
+        "size": "[parameters('appServicePlanSkuSize')]"
+      },
+      "properties": {
+        "name": "[variables('appServicePlanName')]"
+      }
+    },
+    {
+      "location": "[parameters('location')]",
+      "name": "[parameters('appServiceName')]",
+      "type": "Microsoft.Web/sites",
+      "apiVersion": "2018-11-01",
+      "tags": {
+        "[concat('hidden-related:', resourceId(parameters('resourceGroup'),'Microsoft.Web/serverfarms', variables('appServicePlanName')))]": "empty"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/serverFarms', variables('appServicePlanName'))]",
+        "[concat('Microsoft.Sql/servers/', parameters('databaseServerName'))]",
+        "[concat('microsoft.insights/components/', variables('applicationInsightsName'))]",
+        "[concat('Microsoft.Storage/storageAccounts/', parameters('logStorageAccountName'))]"
+      ],
+      "kind": "app",
+      "properties": {
+        "name": "[parameters('appServiceName')]",
+        "kind": "app",
+        "httpsOnly": true,
+        "clientAffinityEnabled": false,
+        "serverFarmId": "[resourceId(parameters('resourceGroup'),'Microsoft.Web/serverfarms', variables('appServicePlanName'))]"
+      },
+      "identity": {
+        "type": "SystemAssigned"
+      }
+    },
+    {
+      "name": "[concat(parameters('appServiceName'),'/appsettings')]",
+      "type": "Microsoft.Web/sites/config",
+      "apiVersion": "2018-11-01",
+      "dependsOn": [
+        "[concat('Microsoft.Web/Sites/', parameters('appServiceName'))]",
+        "[concat('microsoft.insights/components/', variables('applicationInsightsName'))]"
+      ],
+      "properties": {
+        "MyProperty": "1",
+        "APPINSIGHTS_INSTRUMENTATIONKEY": "[reference(resourceId('Microsoft.Insights/components', variables('applicationInsightsName'))).InstrumentationKey]",
+        "APPINSIGHTS_PROFILERFEATURE_VERSION": "1.0.0",
+        "ApplicationInsightsAgent_EXTENSION_VERSION": "~2",
+        "DiagnosticServices_EXTENSION_VERSION": "~3"
+      }
+    },
+    {
+      "apiVersion": "2018-11-01",
+      "type": "Microsoft.Web/sites/config",
+      "name": "[concat(parameters('appServiceName'),'/logs')]",
+      "dependsOn": [
+        "[concat('Microsoft.Web/sites/', parameters('appServiceName'))]"
+      ],
+      "properties": {
+        "httpLogs": {
+          "azureBlobStorage": {
+            "sasUrl": "[concat(reference(concat('Microsoft.Storage/storageAccounts/', parameters('logStorageAccountName'))).primaryEndpoints.blob, variables('blobContainerName'), '?', listAccountSas(parameters('logStorageAccountName'), '2018-02-01', variables('listAccountSasRequestContent')).accountSasToken)]",
+            "retentionInDays": 30,
+            "enabled": true
+          }
+        }
+      }
+    },
+    {
+      "name": "[parameters('logStorageAccountName')]",
+      "type": "Microsoft.Storage/storageAccounts",
+      "apiVersion": "2019-06-01",
+      "location": "[parameters('location')]",
+      "properties": {
+        "supportsHttpsTrafficOnly": true
+      },
+      "sku": {
+        "name": "[parameters('logStorageAccountSkuName')]",
+        "tier": "[parameters('logStorageAccountSkuTier')]"
+      },
+      "kind": "Storage",
+      "resources": [
+        {
+          "type": "blobServices/containers",
+          "name": "[concat('default/', variables('blobContainerName'))]",
+          "apiVersion": "2018-07-01",
+          "dependsOn": [
+            "[concat('Microsoft.Storage/storageAccounts/', parameters('logStorageAccountName'))]"
+          ],
+          "properties": {
+            "publicAccess": "None"
+          }
+          ,
+          "resources": [
+            {
+              "type": "Microsoft.Storage/storageAccounts/blobServices/containers/providers/roleAssignments",
+              "apiVersion": "2018-07-01",
+              "name": "[concat(parameters('logStorageAccountName'),'/default/',variables('blobContainerName'),'/Microsoft.Authorization/',variables('roleAssignmentIdStorage'))]",
+              "dependsOn": [
+                "[concat('Microsoft.Storage/storageAccounts/', parameters('logStorageAccountName'), '/blobServices/default/containers/', variables('blobContainerName'))]"
+              ],
+              "properties": {
+                "roleDefinitionId": "[concat(variables('RoleDefinitions'), variables('storageBlobDataReaderRoleGuid'))]",
+                "principalId": "[parameters('logCollectorPrincipalId')]"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "apiVersion": "2015-05-01-preview",
+      "location": "[parameters('databaseServerLocation')]",
+      "name": "[parameters('databaseServerName')]",
+      "tags": "[parameters('databaseServerserverTags')]",
+      "type": "Microsoft.Sql/servers",
+      "properties": {
+        "administratorLogin": "[parameters('databaseServerLogin')]",
+        "administratorLoginPassword": "[parameters('databaseServerPassword')]",
+        "version": "12.0"
+      },
+      "resources": [
+        {
+          "condition": "[parameters('databaseServerallowAzureIps')]",
+          "name": "AllowAllWindowsAzureIps",
+          "type": "firewallRules",
+          "location": "[parameters('databaseServerLocation')]",
+          "apiVersion": "2015-05-01-preview",
+          "dependsOn": [
+            "[concat('Microsoft.Sql/servers/', parameters('databaseServerName'))]"
+          ],
+          "properties": {
+            "endIpAddress": "0.0.0.0",
+            "startIpAddress": "0.0.0.0"
+          }
+        },
+        {
+          "name": "VismaSpcs",
+          "type": "firewallRules",
+          "location": "[parameters('databaseServerLocation')]",
+          "apiVersion": "2015-05-01-preview",
+          "dependsOn": [
+            "[concat('Microsoft.Sql/servers/', parameters('databaseServerName'))]"
+          ],
+          "properties": {
+            "startIpAddress": "[parameters('ipVismaSpcs')]",
+            "endIpAddress": "[parameters('ipVismaSpcs')]"
+          }
+        }
+      ]
+    },
+    {
+      "type": "Microsoft.Sql/servers/databases",
+      "apiVersion": "2017-03-01-preview",
+      "location": "[parameters('databaseServerLocation')]",
+      "name": "[concat(parameters('databaseServerName'),'/',parameters('databaseName'))]",
+      "tags": {
+        "[concat('hidden-related:', concat('/providers/Microsoft.Web/sites/', parameters('appServiceName')))]": "Connection"
+      },
+      "properties": {
+        "collation": "SQL_Latin1_General_CP1_CI_AS",
+        "maxSizeBytes": "[parameters('databaseMaxSizeBytes')]"
+      },
+      "sku": {
+        "name": "[parameters('databaseSkuName')]",
+        "tier": "[parameters('databaseSkuTier')]"
+      },
+      "dependsOn": [
+        "[concat('Microsoft.Sql/servers/', parameters('databaseServerName'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.KeyVault/vaults",
+      "name": "[parameters('keyVaultName')]",
+      "apiVersion": "2016-10-01",
+      "location": "[parameters('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('appServiceName'))]"
+      ],
+      "properties": {
+        "keyVaultEnabledForDeployment": "[parameters('keyVaultEnabledForDeployment')]",
+        "keyVaultEnabledForDiskEncryption": "[parameters('keyVaultEnabledForDiskEncryption')]",
+        "keyVaultEnabledForTemplateDeployment": "[parameters('keyVaultEnabledForTemplateDeployment')]",
+        "tenantId": "[subscription().tenantId]",
+        "accessPolicies": [
+          {
+            "objectId": "[reference(resourceId('Microsoft.Web/sites', parameters('appServiceName')), '2016-08-01', 'Full').identity.principalId]",
+            "tenantId": "[subscription().tenantId]",
+            "permissions": {
+              "secrets": [
+                "List",
+                "Get"
+              ]
+            }
+          }
+        ],
+        "sku": {
+          "name": "[parameters('keyVaultSkuName')]",
+          "family": "[parameters('keyVaultSkuFamily')]"
+        },
+        "networkAcls": {
+          "defaultAction": "Allow",
+          "bypass": "AzureServices"
+        }
+      }
+    },
+    {
+      "type": "Microsoft.KeyVault/vaults/secrets",
+      "name": "[concat(parameters('keyVaultName'), '/', 'DatabasePassword')]",
+      "apiVersion": "2016-10-01",
+      "location": "[parameters('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.KeyVault/vaults', parameters('keyVaultName'))]"
+      ],
+      "properties": {
+        "value": "[parameters('databasePassword')]"
+      }
+    },
+    {
+      "type": "Microsoft.KeyVault/vaults/secrets",
+      "name": "[concat(parameters('keyVaultName'), '/', 'AdminDatabasePassword')]",
+      "apiVersion": "2016-10-01",
+      "location": "[parameters('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.KeyVault/vaults', parameters('keyVaultName'))]"
+      ],
+      "properties": {
+        "value": "[parameters('adminDatabasePassword')]"
+      }
+    },
+    {
+      "type": "Microsoft.KeyVault/vaults/secrets",
+      "name": "[concat(parameters('keyVaultName'), '/', 'ClientSecret')]",
+      "apiVersion": "2016-10-01",
+      "location": "[parameters('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.KeyVault/vaults', parameters('keyVaultName'))]"
+      ],
+      "properties": {
+        "value": "[parameters('clientSecret')]"
+      }
+    },
+    {
+      "apiVersion": "2017-04-01",
+      "name": "[parameters('eventHubNamespaceName')]",
+      "type": "Microsoft.EventHub/namespaces",
+      "location": "[resourceGroup().location]",
+      "sku": {
+        "name": "[parameters('eventHubSkuName')]",
+        "tier": "[parameters('eventHubSkuTier')]",
+        "capacity": "[parameters('eventHubSkuCapacity')]"
+      },
+      "properties": {
+      }
+      ,
+      "resources": [
+        {
+          "type": "Microsoft.EventHub/namespaces/providers/roleAssignments",
+          "apiVersion": "2018-07-01",
+          "name": "[concat(parameters('eventHubNamespaceName'),'/Microsoft.Authorization/',variables('roleAssignmentIdEventHub'))]",
+          "dependsOn": [
+            "[resourceId('Microsoft.EventHub/namespaces', parameters('eventHubNamespaceName'))]"
+          ],
+          "properties": {
+            "roleDefinitionId": "[concat(variables('RoleDefinitions'), variables('AzureEventHubsDataReceiverRole'))]",
+            "principalId": "[parameters('logCollectorPrincipalId')]"
+          }
+        }
+      ]
+    },
+    {
+      "type": "Microsoft.KeyVault/vaults/secrets",
+      "name": "[concat(parameters('keyVaultName'), '/', 'EmailConfiguration--Password')]",
+      "apiVersion": "2016-10-01",
+      "location": "[parameters('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.KeyVault/vaults', parameters('keyVaultName'))]"
+      ],
+      "properties": {
+        "value": "[parameters('emailPassword')]"
+      }
+    },
+    {
+      "type": "Microsoft.KeyVault/vaults/secrets",
+      "name": "[concat(parameters('keyVaultName'), '/', 'PrivateProgramPassword')]",
+      "apiVersion": "2016-10-01",
+      "location": "[parameters('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.KeyVault/vaults', parameters('keyVaultName'))]"
+      ],
+      "properties": {
+        "value": "[parameters('privateProgramPassword')]"
+      }
+    },
+    {
+      "type": "Microsoft.KeyVault/vaults/secrets",
+      "name": "[concat(parameters('keyVaultName'), '/', 'PublicProgramPassword')]",
+      "apiVersion": "2016-10-01",
+      "location": "[parameters('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.KeyVault/vaults', parameters('keyVaultName'))]"
+      ],
+      "properties": {
+        "value": "[parameters('publicProgramPassword')]"
+      }
+    },
+    {
+      "type": "Microsoft.KeyVault/vaults/secrets",
+      "name": "[concat(parameters('keyVaultName'), '/', 'ApiKey')]",
+      "apiVersion": "2016-10-01",
+      "location": "[parameters('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.KeyVault/vaults', parameters('keyVaultName'))]"
+      ],
+      "properties": {
+        "value": "[parameters('apiKey')]"
+      }
+    }
+  ]
+}

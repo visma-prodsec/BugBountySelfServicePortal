@@ -1,0 +1,26 @@
+﻿{
+  "Users": [
+    {
+      "Key": "bbadmin1@dummy.admin.sec.visma.com"
+    },
+    {
+      "Key": "bbadmin2@dummy.admin.sec.visma.com"
+    }
+  ],
+  "Assets": [
+    {
+      "Key": "www.privateasset1.com",
+      "Description": "Private Asset  1",
+      "Columns": "Username,Password"
+    },
+    {
+      "Key": "www.privateasset2.com",
+      "Description": "Private Asset  2",
+      "Columns": "Username,Password"
+    }
+  ],
+  "Credentials": [
+  ],
+  "CredentialValues": [
+  ]
+}

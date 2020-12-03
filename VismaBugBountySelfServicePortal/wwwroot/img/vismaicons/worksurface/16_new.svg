@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="58" height="16" viewBox="0 0 58 16">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #0089d9;
+      }
+
+      .cls-1, .cls-2, .cls-3 {
+        fill-rule: evenodd;
+      }
+
+      .cls-2 {
+        fill: #c8c8c8;
+      }
+
+      .cls-3 {
+        fill: #39a6e6;
+      }
+    </style>
+  </defs>
+  <title>16_new</title>
+  <g id="New">
+    <path class="cls-1" d="M15,4h0L11,0H2V16H15V5h0ZM11,1l3,3H11V1Zm3,14H3V1h7V5h4Z"/>
+    <path class="cls-2" d="M32,0H23V16H36V4Zm3,15H24V1h7V5h4ZM32,4V1h0l3,3Z"/>
+    <path class="cls-3" d="M53,0H44V16H57V4Zm3,15H45V1h7V5h4ZM53,4V1h0l3,3Z"/>
+  </g>
+</svg>

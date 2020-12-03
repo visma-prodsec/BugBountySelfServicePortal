@@ -1,0 +1,56 @@
+﻿@model VismaBugBountySelfServicePortal.Models.ViewModel.UserCredentialViewModel
+@{
+    ViewBag.Title = "Asset Credentials";
+    Layout = "_Layout";
+}
+<div class="userCredentialsGrid">
+    <div>
+        <h2>Asset Credentials</h2>
+    </div>
+
+    @if (Model != null)
+    {
+            <div>
+                <div class="float-left"><h3>@Model.AssetName</h3></div>
+                <a asp-action="Assets" class="btn btn-primary float-right left">Back</a>
+            </div>
+        <div class="credentialDetails">
+            <table class="list-group w-100 credentialDetails">
+                <thead>
+                    <tr>
+                        @foreach (var column in Model.Columns)
+                        {
+                            <th class="th-blue">@column</th>
+                        }
+                        <th class="th-blue">Hacker</th>
+                    </tr>
+                </thead>
+                @foreach (var credential in Model.Credentials)
+                {
+                    foreach (var credentialRow in credential.Rows)
+                    {
+                        <tr class="list-group-item">
+                            @foreach (var column in Model.Columns)
+                            {
+                                <td>@credentialRow.Value.FirstOrDefault(c => c.ColumnName == column).ColumnValue</td>
+                            }
+                            <td>@credential.HackerName</td>
+                        </tr>
+                    }
+                    <tr>
+                        <td style="height: 1px" colspan="@(Model.Columns.Count + 1)">
+                            <hr style="height: 1px; color: lightgray" />
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-warning float-left" role="alert">
+            Asset not found.
+        </div><div class="float-right"><a asp-action="Assets" class="btn btn-primary float-right left">Back</a></div>
+        <div></div>
+    }
+</div>

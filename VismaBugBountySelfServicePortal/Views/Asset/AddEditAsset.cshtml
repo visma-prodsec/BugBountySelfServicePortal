@@ -1,0 +1,53 @@
+﻿@model VismaBugBountySelfServicePortal.Models.ViewModel.AddEditAssetViewModel
+
+@{
+    ViewBag.Title = "Edit Assets";
+    Layout = "_Layout";
+}
+
+@if (Model != null)
+{
+    <h2>@Model.Name</h2>
+
+    <form method="post" asp-action="AddEditAsset" asp-controller="Asset" asp-antiforgery="true" class="form-horizontal">
+
+        @Html.ValidationSummary(false, "", new { @class = "error-text" })
+
+        @Html.HiddenFor(m => m.IsNew)
+        @if (Model.IsNew)
+            {
+        <div class="form-group required">
+            @Html.LabelFor(m => m.Name, new { @class = "col-1 control-label" })
+            <div class="col-sm-9">
+                @Html.TextBoxFor(m => m.Name, new { @class = "form-control col-3" })
+            </div>
+        </div>
+            }
+            else
+            {
+        @Html.HiddenFor(m => m.Name)
+            }
+
+        <div class="form-group required">
+            @Html.LabelFor(m => m.Description, new { @class = "col-1 control-label" })
+            <div class="col-sm-9">
+                @Html.TextBoxFor(m => m.Description, new { @class = "form-control col-3" })
+            </div>
+        </div>
+        <div class="form-group required">
+            @Html.LabelFor(m => m.Columns, new { @class = "col-1 control-label" })
+            <div class="col-sm-9">
+                @Html.TextAreaFor(m => m.Columns, new { @class = "form-control col-6" })
+            </div>
+        </div>
+        <div class="form-group text-center">
+            <div class="col-1 offset-1">
+                <input type="submit" class="btn btn-primary" value="Save" />
+            </div>
+            <div class="col-1" style="padding-left: 32px">
+                <input type="submit" class="btn " value="Cancel" asp-action="CancelEdit" asp-controller="Asset" />
+            </div>
+        </div>
+
+    </form>
+}

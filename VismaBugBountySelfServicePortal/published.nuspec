@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>VismaBugBountySelfServicePortal</id>
+    <version>$version</version>
+    <authors>Visma Security</authors>
+    <description>VismaBugBountySelfServicePortal</description>
+    <projectUrl>http://www.visma.com</projectUrl>
+  </metadata>
+  <files>
+    <file src="published\**\*.*"/>
+  </files>
+</package>

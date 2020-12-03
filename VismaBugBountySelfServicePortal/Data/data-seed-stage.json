@@ -1,0 +1,26 @@
+﻿{
+  "Users": [
+    {
+      "Key": "bbadmin-stage1@dummy.admin.sec.visma.com"
+    },
+    {
+      "Key": "bbadmin-stage2@dummy.admin.sec.visma.com"
+    }
+  ],
+  "Assets": [
+    {
+      "Key": "www.privateasset-stage1.com",
+      "Description": "Private Asset stage 1",
+      "Columns": "Username,Password"
+    },
+    {
+      "Key": "www.privateasset-stage2.com",
+      "Description": "Private Asset stage 2",
+      "Columns": "Username,Password"
+    }
+  ],
+  "Credentials": [
+  ],
+  "CredentialValues": [
+  ]
+}

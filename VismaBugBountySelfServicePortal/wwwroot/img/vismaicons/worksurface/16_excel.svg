@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="58" height="16" viewBox="0 0 58 16">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #0089d9;
+      }
+
+      .cls-1, .cls-2, .cls-3, .cls-4 {
+        fill-rule: evenodd;
+      }
+
+      .cls-2 {
+        fill: #68a611;
+      }
+
+      .cls-3 {
+        fill: #c8c8c8;
+      }
+
+      .cls-4 {
+        fill: #39a6e6;
+      }
+    </style>
+  </defs>
+  <title>16_excel</title>
+  <g id="Office_Excel" data-name="Office Excel">
+    <path class="cls-1" d="M10,0H1V16H14V4Zm3,15H2V1H9V5h4ZM10,4V1h0l3,3H10Z"/>
+    <path class="cls-2" d="M7,6l5,7H9L4,6Z"/>
+    <path class="cls-2" d="M9.7,6,4,12H6l5-5.3V6Z"/>
+    <path class="cls-3" d="M31,0H22V16H35V4Zm3,15H23V1h7V5h4ZM31,4V1h0l3,3H31Z"/>
+    <path class="cls-3" d="M28,6l5,7H30L25,6Z"/>
+    <path class="cls-3" d="M30.7,6,25,12h2l5-5.3V6Z"/>
+    <path class="cls-4" d="M52,0H43V16H56V4Zm3,15H44V1h7V5h4ZM52,4V1h0l3,3H52Z"/>
+    <path class="cls-2" d="M49,6l5,7H51L46,6Z"/>
+    <path class="cls-2" d="M51.7,6,46,12h2l5-5.3V6Z"/>
+  </g>
+</svg>

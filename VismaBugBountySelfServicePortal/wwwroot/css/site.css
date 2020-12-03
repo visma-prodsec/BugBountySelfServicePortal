@@ -1,0 +1,140 @@
+﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
+for details on configuring this project to bundle and minify static web assets. */
+
+a.navbar-brand {
+    white-space: normal;
+    text-align: center;
+    word-break: break-all;
+}
+
+/* Provide sufficient contrast against white background */
+a {
+    color: #0366d6;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
+}
+
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+.border-top {
+    border-top: 1px solid #e5e5e5;
+}
+
+.border-bottom {
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.box-shadow {
+    box-shadow: 0 .25rem .75rem #000000;
+    box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+
+button.accept-policy {
+    font-size: 1rem;
+    line-height: inherit;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    /* Margin bottom by footer height */
+    margin-bottom: 60px;
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    white-space: nowrap;
+    line-height: 60px; /* Vertically center the text there */
+}
+
+.error-text {
+    color: red;
+}
+
+.logo {
+    height: 66px;
+}
+
+#cover {
+    background: url("../img/spinners/spinner_dotted_grey_dark.svg") no-repeat center center #252626;
+    margin-top: -34px;
+    position: fixed;
+    z-index: 1500;
+    height: 100%;
+    width: 100%;
+    opacity: 0.5;
+    display: none;
+}
+
+.btn-events {
+    pointer-events: all;
+}
+.right-space {
+    padding-right: 25px;
+    padding-left: 5px;
+}
+.th-blue {
+    color: #007ACA;
+}
+.icon-copy {
+    width: 16px;
+    height: 16px;
+    background: url("../img/vismaicons/worksurface/16_copy.png") 0 0;
+    cursor: copy
+}
+
+.main {
+    height: calc(100vh - 165px);
+}
+.userCredentialsGrid {
+    display: grid;
+    grid-auto-rows: auto auto minmax(0, 1fr);
+    height: 100%;
+}
+.credentialDetails {
+    overflow: auto;
+    height: 100%
+}
+
+th {
+    z-index: 1;
+    background: white;
+    position: sticky;
+    top: 0; /* Don't forget this, required for the stickiness */
+    box-shadow: 0 2px 2px -1px #000000;
+    box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);
+}
+.bold {
+    font-weight: bold;
+}
+span.vismaicon {
+    padding-left: 5px;
+    padding-right: 5px;
+}

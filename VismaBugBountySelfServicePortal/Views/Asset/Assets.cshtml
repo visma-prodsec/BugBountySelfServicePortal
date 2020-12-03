@@ -1,0 +1,176 @@
+﻿@using VismaBugBountySelfServicePortal.Helpers
+@using System.Web
+@model IEnumerable<VismaBugBountySelfServicePortal.Models.ViewModel.AssetViewModel>
+
+@{
+    ViewBag.Title = "Assets";
+    Layout = "_Layout";
+}
+
+<div class="userCredentialsGrid">
+    <div>
+        <h2>Assets</h2>
+        @if (TempData.IsNonEmpty("SuccessText"))
+        {
+            <div class="alert alert-success alert-sm" role="alert">
+                @TempData["SuccessText"].ToString()
+            </div>
+        }
+        @if (TempData.IsNonEmpty("ErrorText"))
+        {
+            <div class="alert alert-danger  alert-sm" role="alert">
+                @TempData["ErrorText"].ToString()
+            </div>
+        }
+        @if (TempData.IsNonEmpty("WarningText"))
+        {
+            <div class="alert alert-warning  alert-sm" role="alert">
+                @TempData["WarningText"].ToString()
+            </div>
+        }
+        <div class="form-group text-right">
+            <form asp-controller="Asset" asp-action="SyncAssets" method="post" asp-antiforgery="true">
+                <input id="syncAssets" type="submit" class="btn btn-primary" value="Sync with H1" onclick="showCover()" />
+                <input id="addAsset" type="button" class="btn btn-primary" value="Add" onclick="loadAsset('');return false;" />
+                <a asp-action="UserAssetCredentials" class="btn btn-primary" type="button">View User</a>
+            </form>
+        </div>
+    </div>
+    <div class="search-group search-group-button">
+        <input id="ex2" class="form-control" type="search" placeholder="Search..." aria-describedby="searchBlock" oninput="searchAsset(this.value)">
+        <button class="btn search-icon" type="submit" tabindex="-1"></button>
+        <span class="clear-search"></span>
+    </div>
+    <div class="credentialDetails">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Asset</th>
+                    <th class="text-center">Visible</th>
+                    <th class="text-center">On H1</th>
+                    <th class="text-center">On Public</th>
+                    <th class="text-right">% Available</th>
+                    <th class="text-right">Free</th>
+                    <th class="text-right">Total</th>
+                    <th></th>
+                </tr>
+            </thead>
+            @foreach (var asset in Model)
+            {
+                <tr id="@asset.Name" name="@asset.Description" for="filter" class="@(asset.PercentAvailable < 15 ? "text-red bold" : "")">
+                    <td>
+                        @asset.Description - @asset.Name
+                    </td>
+                    <td class="text-center">
+                        <form asp-controller="Asset" asp-action="UpdateAssetVisibility" method="post" asp-antiforgery="true" class="text-right">
+                            <div class="checkbox checkbox-inline">
+                                <input type="checkbox" @(asset.IsVisible ? "checked = checked" : "") id="@asset.Description" name="isVisible" onclick="this.form.submit()" />
+                                <label for="@asset.Description"></label>
+                                <input type="hidden" value="@asset.Name" name="assetName" />
+                            </div>
+                        </form>
+                    </td>
+                    <td class="text-right">
+                        <div class="checkbox checkbox-inline disabled">
+                            <input type="checkbox" @(asset.IsOnHackerOne ? "checked = checked" : "") id="chk" disabled="disabled" />
+                            <label for="chk"></label>
+                        </div>
+                    </td>
+                    <td class="text-center">
+                        <div class="checkbox checkbox-inline disabled">
+                            <input type="checkbox" @(asset.IsOnPublicProgram ? "checked = checked" : "") id="chk" disabled="disabled" />
+                            <label for="chk"></label>
+                        </div>
+                    </td>
+                    <td class="text-right">@asset.PercentAvailable %</td>
+                    <td class="text-right">@asset.Free</td>
+                    <td class="text-right">@asset.Total</td>
+                    <td class="text-center">
+                        <span class="vismaicon vismaicon-upload" title="Import Credentials" onclick='$("#selectedAssetName").val("@HttpUtility.JavaScriptStringEncode(asset.Name)");showModal("uploadModal");'></span>
+                        <span class="vismaicon vismaicon-edit" title="Edit" onclick="loadAsset('@HttpUtility.JavaScriptStringEncode(asset.Name)');return false;"></span>
+                        <span class="vismaicon vismaicon-list-view" title="View" onclick="viewAsset('@HttpUtility.JavaScriptStringEncode(asset.Name)');return false;"></span>
+                        <a asp-action="ExportCsv" asp-route-assetName="@asset.Name"><span class="vismaicon vismaicon-download" title="Export Credentials"></span></a>
+                        <span class="vismaicon vismaicon-delete" title="Delete" onclick="showDeletePopup('@HttpUtility.JavaScriptStringEncode(asset.Name)', 'deleteModal');return false;"></span>
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>
+<div id="deleteModal" class="modal modal-help">
+    <div class="modal-dialog">
+        <div>
+            <div class="modal-header">
+                <div class="modal-title">
+                    Are you sure you want to delete asset?
+                </div>
+            </div>
+            <div class="modal-body">
+                <div>
+                    Please backup Asset data by exporting it before deleting so you can restore it later if you need.
+                </div>
+            </div>
+            <div class="modal-footer">
+                <form method="post" asp-controller="Asset" asp-action="DeleteAsset" asp-antiforgery="true">
+                    <input type="hidden" id="deleteAssetId" name="deleteAssetId" />
+                    <input type="submit" title="Yes" value="Yes" class="btn btn-primary" />
+                    <input type="submit" title="No" value="No" class="btn" onclick='$("#deleteModal").hide();return false;' />
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="uploadModal" class="modal">
+    <div class="modal-dialog">
+        <div>
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" onclick='$("#uploadModal").hide()'></button>
+                <h4 class="modal-title">Import Credentials</h4>
+            </div>
+            <div class="modal-body">
+                <form method="post" enctype="multipart/form-data" asp-controller="Asset" asp-action="ImportCredentials" asp-antiforgery="true">
+                    <input type="hidden" id="selectedAssetName" name="selectedAssetName" />
+                    <div class="form-group">
+                        <label for="postedFile">Select a csv file: </label>
+
+                        <div class="col-sm-7">
+                            <input type="file" id="postedFile" name="postedFile" class="form-control" accept=".csv" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="offset-3 col-md-5">
+                            <br />
+                            <input type="submit" title="Upload" value="Upload" class="btn btn-primary" onclick="showCover()" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    function showDeletePopup(assetName, modalId) {
+        $("#deleteAssetId").val(assetName);
+        showModal(modalId);
+    }
+
+    function loadAsset(assetName) {
+        window.location.href = '@Url.Action("AddEditAsset", "Asset")?assetName=' + encodeURIComponent(assetName);
+    }
+    function viewAsset(assetName) {
+        window.location.href = '@Url.Action("AssetDetails", "Asset")?assetName=' + encodeURIComponent(assetName);
+    }
+    function searchAsset(text) {
+        var searchText = text.toLowerCase();
+        $("tr[for='filter']").each(function (i, element) {
+            var e = $(element);
+            if (e.attr("id").toLowerCase().includes(searchText) || e.attr("name").toLowerCase().includes(searchText)) {
+                e.show();
+            }
+            else {
+                e.hide();
+            }
+        });
+    }
+
+</script>

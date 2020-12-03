@@ -1,0 +1,13 @@
+﻿@model VismaBugBountySelfServicePortal.Models.ViewModel.ErrorViewModel
+@{
+    ViewData["Title"] = "Error";
+}
+
+<h1 class="error-text">Error</h1>
+<h2 class="error-text">An error occurred while processing your request</h2>
+<h3>Error message: @Model.ErrorMessage</h3>
+@if (Model.HttpStatusCode != 0)
+{
+    <h3>Status Code: @Model.HttpStatusCode</h3>
+}
+

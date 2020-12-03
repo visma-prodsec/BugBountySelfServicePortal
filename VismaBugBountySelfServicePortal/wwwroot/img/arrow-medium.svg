@@ -1,0 +1,168 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="158" height="58" viewBox="0 0 158 58">
+  <defs>
+    <clipPath id="clip-path">
+      <rect width="9" height="4.96" fill="none"/>
+    </clipPath>
+    <filter id="Arrow" x="2.5" y="49.5" width="12" height="8" filterUnits="userSpaceOnUse">
+      <feOffset dy="1" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="0.5" result="blur"/>
+      <feFlood flood-color="#001f33" flood-opacity="0.2"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="Arrow-2" x="2.5" y="41.5" width="12" height="8" filterUnits="userSpaceOnUse">
+      <feOffset dy="1" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="0.5" result="blur-2"/>
+      <feFlood flood-color="#001f33" flood-opacity="0.2"/>
+      <feComposite operator="in" in2="blur-2"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="Arrow_Medium_-_Blue" x="82.5" y="25.5" width="12" height="7.96" filterUnits="userSpaceOnUse">
+      <feOffset dy="1" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="0.5" result="blur-3"/>
+      <feFlood flood-color="#001f33" flood-opacity="0.2"/>
+      <feComposite operator="in" in2="blur-3"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="Arrow_Medium_-_Green" x="122.5" y="25.5" width="12" height="7.96" filterUnits="userSpaceOnUse">
+      <feOffset dy="1" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="0.5" result="blur-4"/>
+      <feFlood flood-color="#3b6600" flood-opacity="0.302"/>
+      <feComposite operator="in" in2="blur-4"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="Arrow-3" x="42.5" y="25.5" width="12" height="7.96" filterUnits="userSpaceOnUse">
+      <feOffset dy="1" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="0.5" result="blur-5"/>
+      <feFlood flood-color="#001f33" flood-opacity="0.2"/>
+      <feComposite operator="in" in2="blur-5"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="Arrow-4" x="2.5" y="25.5" width="12" height="8" filterUnits="userSpaceOnUse">
+      <feOffset dy="1" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="0.5" result="blur-6"/>
+      <feFlood flood-color="#001f33" flood-opacity="0.2"/>
+      <feComposite operator="in" in2="blur-6"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="Arrow-5" x="2.5" y="5.5" width="12" height="8" filterUnits="userSpaceOnUse">
+      <feOffset dy="1" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="0.5" result="blur-7"/>
+      <feFlood flood-color="#001f33" flood-opacity="0.2"/>
+      <feComposite operator="in" in2="blur-7"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="Arrow_Medium_-_Blue-2" x="82.5" y="5.5" width="12" height="7.96" filterUnits="userSpaceOnUse">
+      <feOffset dy="1" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="0.5" result="blur-8"/>
+      <feFlood flood-color="#001f33" flood-opacity="0.2"/>
+      <feComposite operator="in" in2="blur-8"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="Arrow_Medium_-_Green-2" x="122.5" y="5.5" width="12" height="7.96" filterUnits="userSpaceOnUse">
+      <feOffset dy="1" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="0.5" result="blur-9"/>
+      <feFlood flood-color="#3b6600" flood-opacity="0.302"/>
+      <feComposite operator="in" in2="blur-9"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="Arrow-6" x="42.5" y="5.5" width="12" height="7.96" filterUnits="userSpaceOnUse">
+      <feOffset dy="1" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="0.5" result="blur-10"/>
+      <feFlood flood-color="#001f33" flood-opacity="0.2"/>
+      <feComposite operator="in" in2="blur-10"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <clipPath id="clip-arrows-medium">
+      <rect width="158" height="58"/>
+    </clipPath>
+  </defs>
+  <g id="arrows-medium" clip-path="url(#clip-arrows-medium)">
+    <g id="Arrows_Up_and_Down_Medium" data-name="Arrows Up and Down Medium" transform="translate(-204 -754.997)">
+      <g id="Arrow_Medium_-_Dark_-_Disabled" data-name="Arrow Medium - Dark - Disabled" transform="translate(237 801.997) rotate(180)" clip-path="url(#clip-path)">
+        <path id="Arrow-7" data-name="Arrow" d="M-65.906-5198.459a.5.5,0,0,1-.393-.145l-3.961-3.959a.5.5,0,0,1,0-.707.5.5,0,0,1,.708,0l3.646,3.646,3.646-3.646a.5.5,0,0,1,.708,0,.5.5,0,0,1,0,.707l-3.961,3.959a.5.5,0,0,1-.353.147Z" transform="translate(70.406 5203.417)" fill="#959799"/>
+      </g>
+      <g id="Arrow_Medium_-_Dark_-_Disabled-2" data-name="Arrow Medium - Dark - Disabled" transform="translate(228 804.997)" clip-path="url(#clip-path)">
+        <path id="Arrow-8" data-name="Arrow" d="M-65.906-5198.459a.5.5,0,0,1-.393-.145l-3.961-3.959a.5.5,0,0,1,0-.707.5.5,0,0,1,.708,0l3.646,3.646,3.646-3.646a.5.5,0,0,1,.708,0,.5.5,0,0,1,0,.707l-3.961,3.959a.5.5,0,0,1-.353.147Z" transform="translate(70.406 5203.417)" fill="#959799"/>
+      </g>
+      <g id="Arrow_Medium_-_Dark" data-name="Arrow Medium - Dark" transform="translate(208 804.997)">
+        <g transform="matrix(1, 0, 0, 1, -4, -50)" filter="url(#Arrow)">
+          <path id="Arrow-9" data-name="Arrow" d="M4.5,5a.5.5,0,0,1-.394-.146L.147.86a.507.507,0,0,1,0-.713.5.5,0,0,1,.707,0L4.5,3.823,8.146.148a.5.5,0,0,1,.707,0,.507.507,0,0,1,0,.713L4.893,4.852A.5.5,0,0,1,4.54,5Z" transform="translate(4 50)" fill="#252626"/>
+        </g>
+      </g>
+      <g id="Arrow_Medium_-_Dark-2" data-name="Arrow Medium - Dark" transform="translate(217 801.997) rotate(180)">
+        <g transform="matrix(-1, 0, 0, -1, 13, 47)" filter="url(#Arrow-2)">
+          <path id="Arrow-10" data-name="Arrow" d="M4.5,5a.5.5,0,0,1-.394-.146L.147.86a.507.507,0,0,1,0-.713.5.5,0,0,1,.707,0L4.5,3.823,8.146.148a.5.5,0,0,1,.707,0,.507.507,0,0,1,0,.713L4.893,4.852A.5.5,0,0,1,4.54,5Z" transform="translate(13 47) rotate(180)" fill="#252626"/>
+        </g>
+      </g>
+    </g>
+    <g id="Arrows_Down_Medium" data-name="Arrows Down Medium" transform="translate(-204 -754.997)">
+      <g id="Arrow_Medium_-_Blue_-_Disabled" data-name="Arrow Medium - Blue - Disabled" transform="translate(308 781)" clip-path="url(#clip-path)">
+        <path id="Arrow_Medium_-_Blue_-_Disabled-2" data-name="Arrow Medium - Blue - Disabled" d="M-65.906-5198.459a.5.5,0,0,1-.393-.145l-3.961-3.959a.5.5,0,0,1,0-.707.5.5,0,0,1,.708,0l3.646,3.646,3.646-3.646a.5.5,0,0,1,.708,0,.5.5,0,0,1,0,.707l-3.961,3.959a.5.5,0,0,1-.353.147Z" transform="translate(70.406 5203.417)" fill="#5bb4f0"/>
+      </g>
+      <g id="Arrow_Medium_-_Blue-3" data-name="Arrow Medium - Blue" transform="translate(288 780.997)">
+        <g transform="matrix(1, 0, 0, 1, -84, -26)" filter="url(#Arrow_Medium_-_Blue)">
+          <path id="Arrow_Medium_-_Blue-4" data-name="Arrow Medium - Blue" d="M-65.906-5198.459a.5.5,0,0,1-.393-.145l-3.961-3.959a.5.5,0,0,1,0-.707.5.5,0,0,1,.708,0l3.646,3.646,3.646-3.646a.5.5,0,0,1,.708,0,.5.5,0,0,1,0,.707l-3.961,3.959a.5.5,0,0,1-.353.147Z" transform="translate(154.41 5229.42)" fill="#0087e0"/>
+        </g>
+      </g>
+      <g id="Arrow_Medium_-_Green_-_Disabled" data-name="Arrow Medium - Green - Disabled" transform="translate(348 780.997)" clip-path="url(#clip-path)">
+        <path id="Arrow_Medium_-_Green_-_Disabled-2" data-name="Arrow Medium - Green - Disabled" d="M-65.906-5198.459a.5.5,0,0,1-.393-.145l-3.961-3.959a.5.5,0,0,1,0-.707.5.5,0,0,1,.708,0l3.646,3.646,3.646-3.646a.5.5,0,0,1,.708,0,.5.5,0,0,1,0,.707l-3.961,3.959a.5.5,0,0,1-.353.147Z" transform="translate(70.406 5203.417)" fill="#cfe5ae"/>
+      </g>
+      <g id="Arrow_Medium_-_Green-3" data-name="Arrow Medium - Green" transform="translate(328 780.997)">
+        <g transform="matrix(1, 0, 0, 1, -124, -26)" filter="url(#Arrow_Medium_-_Green)">
+          <path id="Arrow_Medium_-_Green-4" data-name="Arrow Medium - Green" d="M-65.906-5198.459a.5.5,0,0,1-.393-.145l-3.961-3.959a.5.5,0,0,1,0-.707.5.5,0,0,1,.708,0l3.646,3.646,3.646-3.646a.5.5,0,0,1,.708,0,.5.5,0,0,1,0,.707l-3.961,3.959a.5.5,0,0,1-.353.147Z" transform="translate(194.41 5229.42)" fill="#4d8400"/>
+        </g>
+      </g>
+      <g id="Arrow_Medium_-_White_-_Disabled" data-name="Arrow Medium - White  - Disabled" transform="translate(268 780.997)" clip-path="url(#clip-path)">
+        <path id="Arrow-11" data-name="Arrow" d="M-65.906-5198.459a.5.5,0,0,1-.393-.145l-3.961-3.959a.5.5,0,0,1,0-.707.5.5,0,0,1,.708,0l3.646,3.646,3.646-3.646a.5.5,0,0,1,.708,0,.5.5,0,0,1,0,.707l-3.961,3.959a.5.5,0,0,1-.353.147Z" transform="translate(70.406 5203.417)" fill="rgba(255,255,255,0.5)"/>
+      </g>
+      <g id="Arrow_Medium_-_White" data-name="Arrow Medium - White" transform="translate(248 780.997)">
+        <g transform="matrix(1, 0, 0, 1, -44, -26)" filter="url(#Arrow-3)">
+          <path id="Arrow-12" data-name="Arrow" d="M-65.906-5198.459a.5.5,0,0,1-.393-.145l-3.961-3.959a.5.5,0,0,1,0-.707.5.5,0,0,1,.708,0l3.646,3.646,3.646-3.646a.5.5,0,0,1,.708,0,.5.5,0,0,1,0,.707l-3.961,3.959a.5.5,0,0,1-.353.147Z" transform="translate(114.41 5229.42)" fill="#fff"/>
+        </g>
+      </g>
+      <g id="Arrow_Medium_-_Dark_-_Disabled-3" data-name="Arrow Medium - Dark - Disabled" transform="translate(228 780.997)" clip-path="url(#clip-path)">
+        <path id="Arrow-13" data-name="Arrow" d="M-65.906-5198.459a.5.5,0,0,1-.393-.145l-3.961-3.959a.5.5,0,0,1,0-.707.5.5,0,0,1,.708,0l3.646,3.646,3.646-3.646a.5.5,0,0,1,.708,0,.5.5,0,0,1,0,.707l-3.961,3.959a.5.5,0,0,1-.353.147Z" transform="translate(70.406 5203.417)" fill="#959799"/>
+      </g>
+      <g id="Arrow_Medium_-_Dark-3" data-name="Arrow Medium - Dark" transform="translate(208 780.997)">
+        <g transform="matrix(1, 0, 0, 1, -4, -26)" filter="url(#Arrow-4)">
+          <path id="Arrow-14" data-name="Arrow" d="M4.5,5a.5.5,0,0,1-.394-.146L.147.86a.507.507,0,0,1,0-.713.5.5,0,0,1,.707,0L4.5,3.823,8.146.148a.5.5,0,0,1,.707,0,.507.507,0,0,1,0,.713L4.893,4.852A.5.5,0,0,1,4.54,5Z" transform="translate(4 26)" fill="#252626"/>
+        </g>
+      </g>
+    </g>
+    <g id="Arrows_Up_Medium" data-name="Arrows Up Medium" transform="translate(-204 -754.997)">
+      <g id="Arrow_Medium_-_Dark_-_Disabled-4" data-name="Arrow Medium - Dark - Disabled" transform="translate(237 765.957) rotate(180)" clip-path="url(#clip-path)">
+        <path id="Arrow-15" data-name="Arrow" d="M-65.906-5198.459a.5.5,0,0,1-.393-.145l-3.961-3.959a.5.5,0,0,1,0-.707.5.5,0,0,1,.708,0l3.646,3.646,3.646-3.646a.5.5,0,0,1,.708,0,.5.5,0,0,1,0,.707l-3.961,3.959a.5.5,0,0,1-.353.147Z" transform="translate(70.406 5203.417)" fill="#959799"/>
+      </g>
+      <g id="Arrow_Medium_-_Dark-4" data-name="Arrow Medium - Dark" transform="translate(217 765.997) rotate(180)">
+        <g transform="matrix(-1, 0, 0, -1, 13, 11)" filter="url(#Arrow-5)">
+          <path id="Arrow-16" data-name="Arrow" d="M4.5,5a.5.5,0,0,1-.394-.146L.147.86a.507.507,0,0,1,0-.713.5.5,0,0,1,.707,0L4.5,3.823,8.146.148a.5.5,0,0,1,.707,0,.507.507,0,0,1,0,.713L4.893,4.852A.5.5,0,0,1,4.54,5Z" transform="translate(13 11) rotate(180)" fill="#252626"/>
+        </g>
+      </g>
+      <g id="Arrow_Medium_-_Blue_-_Disabled-3" data-name="Arrow Medium - Blue - Disabled" transform="translate(317 765.96) rotate(180)" clip-path="url(#clip-path)">
+        <path id="Arrow_Medium_-_Blue_-_Disabled-4" data-name="Arrow Medium - Blue - Disabled" d="M-65.906-5198.459a.5.5,0,0,1-.393-.145l-3.961-3.959a.5.5,0,0,1,0-.707.5.5,0,0,1,.708,0l3.646,3.646,3.646-3.646a.5.5,0,0,1,.708,0,.5.5,0,0,1,0,.707l-3.961,3.959a.5.5,0,0,1-.353.147Z" transform="translate(70.406 5203.417)" fill="#5bb4f0"/>
+      </g>
+      <g id="Arrow_Medium_-_Blue-5" data-name="Arrow Medium - Blue" transform="translate(297 765.957) rotate(180)">
+        <g transform="matrix(-1, 0, 0, -1, 93, 10.96)" filter="url(#Arrow_Medium_-_Blue-2)">
+          <path id="Arrow_Medium_-_Blue-6" data-name="Arrow Medium - Blue" d="M-65.906-5198.459a.5.5,0,0,1-.393-.145l-3.961-3.959a.5.5,0,0,1,0-.707.5.5,0,0,1,.708,0l3.646,3.646,3.646-3.646a.5.5,0,0,1,.708,0,.5.5,0,0,1,0,.707l-3.961,3.959a.5.5,0,0,1-.353.147Z" transform="translate(22.59 -5192.46) rotate(180)" fill="#0087e0"/>
+        </g>
+      </g>
+      <g id="Arrow_Medium_-_Green_-_Disabled-3" data-name="Arrow Medium - Green - Disabled" transform="translate(357 765.957) rotate(180)" clip-path="url(#clip-path)">
+        <path id="Arrow_Medium_-_Green_-_Disabled-4" data-name="Arrow Medium - Green - Disabled" d="M-65.906-5198.459a.5.5,0,0,1-.393-.145l-3.961-3.959a.5.5,0,0,1,0-.707.5.5,0,0,1,.708,0l3.646,3.646,3.646-3.646a.5.5,0,0,1,.708,0,.5.5,0,0,1,0,.707l-3.961,3.959a.5.5,0,0,1-.353.147Z" transform="translate(70.406 5203.417)" fill="#cfe5ae"/>
+      </g>
+      <g id="Arrow_Medium_-_Green-5" data-name="Arrow Medium - Green" transform="translate(337 765.957) rotate(180)">
+        <g transform="matrix(-1, 0, 0, -1, 133, 10.96)" filter="url(#Arrow_Medium_-_Green-2)">
+          <path id="Arrow_Medium_-_Green-6" data-name="Arrow Medium - Green" d="M-65.906-5198.459a.5.5,0,0,1-.393-.145l-3.961-3.959a.5.5,0,0,1,0-.707.5.5,0,0,1,.708,0l3.646,3.646,3.646-3.646a.5.5,0,0,1,.708,0,.5.5,0,0,1,0,.707l-3.961,3.959a.5.5,0,0,1-.353.147Z" transform="translate(62.59 -5192.46) rotate(180)" fill="#4d8400"/>
+        </g>
+      </g>
+      <g id="Arrow_Medium_-_White_-_Disabled-2" data-name="Arrow Medium - White  - Disabled" transform="translate(277 765.957) rotate(180)" clip-path="url(#clip-path)">
+        <path id="Arrow-17" data-name="Arrow" d="M-65.906-5198.459a.5.5,0,0,1-.393-.145l-3.961-3.959a.5.5,0,0,1,0-.707.5.5,0,0,1,.708,0l3.646,3.646,3.646-3.646a.5.5,0,0,1,.708,0,.5.5,0,0,1,0,.707l-3.961,3.959a.5.5,0,0,1-.353.147Z" transform="translate(70.406 5203.417)" fill="rgba(255,255,255,0.5)"/>
+      </g>
+      <g id="Arrow_Medium_-_White-2" data-name="Arrow Medium - White" transform="translate(257 765.957) rotate(180)">
+        <g transform="matrix(-1, 0, 0, -1, 53, 10.96)" filter="url(#Arrow-6)">
+          <path id="Arrow-18" data-name="Arrow" d="M-65.906-5198.459a.5.5,0,0,1-.393-.145l-3.961-3.959a.5.5,0,0,1,0-.707.5.5,0,0,1,.708,0l3.646,3.646,3.646-3.646a.5.5,0,0,1,.708,0,.5.5,0,0,1,0,.707l-3.961,3.959a.5.5,0,0,1-.353.147Z" transform="translate(-17.41 -5192.46) rotate(180)" fill="#fff"/>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="58" height="16" viewBox="0 0 58 16">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #0089d9;
+      }
+
+      .cls-1, .cls-2 {
+        fill-rule: evenodd;
+      }
+
+      .cls-2 {
+        fill: #c8c8c8;
+      }
+    </style>
+  </defs>
+  <title>16_filter</title>
+  <g id="Filter">
+    <path class="cls-1" d="M0,0V2c0,4.7,6,4.7,6,8v5.8l4-2V10c0-3.3,6-3.3,6-8V0ZM15,2c0,3.7-6,4-6,8v3L7,14V10C7,6,1,5.8,1,2V1H15Z"/>
+    <path class="cls-2" d="M21,0V2c0,4.7,6,4.7,6,8v5.8l4-2V10c0-3.3,6-3.3,6-8V0ZM36,2c0,3.7-6,4-6,8v3l-2,1V10c0-4-6-4.2-6-8V1H36Z"/>
+    <path class="cls-1" d="M42,0V2c0,4.7,6,4.7,6,8v5.8l4-2V10c0-3.3,6-3.3,6-8V0ZM57,2c0,3.7-6,4-6,8v3l-2,1V10c0-4-6-4.2-6-8V1H57Z"/>
+  </g>
+</svg>

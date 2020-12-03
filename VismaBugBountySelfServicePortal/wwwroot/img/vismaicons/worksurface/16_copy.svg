@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="58" height="16" viewBox="0 0 58 16">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #0089d9;
+      }
+
+      .cls-1, .cls-2, .cls-3 {
+        fill-rule: evenodd;
+      }
+
+      .cls-2 {
+        fill: #c8c8c8;
+      }
+
+      .cls-3 {
+        fill: #39a6e6;
+      }
+    </style>
+  </defs>
+  <title>16_copy</title>
+  <g id="Copy">
+    <path class="cls-1" d="M10.3,2h-2l-2-2H0V14H4v2H15V6.7ZM11,4l2,2H11ZM7,2ZM4,13H1V1H6V2H4Zm10,2H5V3h5V7h4Z"/>
+    <path class="cls-2" d="M31.3,2h-2l-2-2H21V14h4v2H36V6.7ZM32,4l2,2H32ZM28,2ZM25,13H22V1h5V2H25Zm10,2H26V3h5V7h4Z"/>
+    <path class="cls-3" d="M52.3,2h-2l-2-2H42V14h4v2H57V6.7ZM53,4l2,2H53ZM49,2ZM46,13H43V1h5V2H46Zm10,2H47V3h5V7h4Z"/>
+  </g>
+</svg>

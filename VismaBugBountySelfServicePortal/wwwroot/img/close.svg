@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="77.027" height="30.549" viewBox="0 0 77.027 30.549">
+  <defs>
+    <filter id="Close" x="60.996" y="0" width="16.031" height="16.049" filterUnits="userSpaceOnUse">
+      <feOffset dy="1" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="0.5" result="blur"/>
+      <feFlood flood-color="#001f33" flood-opacity="0.2"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="Close-2" x="39.996" y="0" width="16.031" height="16.049" filterUnits="userSpaceOnUse">
+      <feOffset dy="1" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="0.5" result="blur-2"/>
+      <feFlood flood-color="#001f33" flood-opacity="0.2"/>
+      <feComposite operator="in" in2="blur-2"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="Close-3" x="21" y="2.015" width="11.998" height="11.999" filterUnits="userSpaceOnUse">
+      <feOffset dy="1" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="0.5" result="blur-3"/>
+      <feFlood flood-color="#001f33" flood-opacity="0.2"/>
+      <feComposite operator="in" in2="blur-3"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="Close-4" x="0" y="2.015" width="11.998" height="11.999" filterUnits="userSpaceOnUse">
+      <feOffset dy="1" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="0.5" result="blur-4"/>
+      <feFlood flood-color="#001f33" flood-opacity="0.2"/>
+      <feComposite operator="in" in2="blur-4"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="Group_3" data-name="Group 3" transform="translate(-147.501 -347.486)">
+    <g id="Group_2" data-name="Group 2">
+      <g id="Group_1" data-name="Group 1">
+        <g id="Close_Dark_-_Large_-_Disabled" data-name="Close Dark - Large - Disabled" transform="translate(209.997 364.986)">
+          <path id="Close-5" data-name="Close" d="M13605.369,1291.095l-5.665-5.665-5.638,5.638a.5.5,0,0,1-.707-.707l5.638-5.638-5.647-5.648a.5.5,0,0,1,.707-.71l5.648,5.651,5.675-5.674a.5.5,0,0,1,.706.707l-5.674,5.674,5.664,5.666a.5.5,0,0,1-.707.707Z" transform="translate(-13593.203 -1278.192)" fill="rgba(255,255,255,0.5)"/>
+        </g>
+        <g id="Close_Dark_-_Large_-_Normal" data-name="Close Dark - Large - Normal" transform="translate(209.997 347.986)">
+          <g transform="matrix(1, 0, 0, 1, -62.5, -0.5)" filter="url(#Close)">
+            <path id="Close-6" data-name="Close" d="M13605.369,1291.095l-5.665-5.665-5.638,5.638a.5.5,0,0,1-.707-.707l5.638-5.638-5.647-5.648a.5.5,0,0,1,.707-.71l5.648,5.651,5.675-5.674a.5.5,0,0,1,.706.707l-5.674,5.674,5.664,5.666a.5.5,0,0,1-.707.707Z" transform="translate(-13530.71 -1277.69)" fill="#fff"/>
+          </g>
+        </g>
+        <g id="Close_Dark_-_Large_-_Normal-2" data-name="Close Dark - Large - Normal" transform="translate(188.997 347.986)">
+          <g transform="matrix(1, 0, 0, 1, -41.5, -0.5)" filter="url(#Close-2)">
+            <path id="Close-7" data-name="Close" d="M13605.369,1291.095l-5.665-5.665-5.638,5.638a.5.5,0,0,1-.707-.707l5.638-5.638-5.647-5.648a.5.5,0,0,1,.707-.71l5.648,5.651,5.675-5.674a.5.5,0,0,1,.706.707l-5.674,5.674,5.664,5.666a.5.5,0,0,1-.707.707Z" transform="translate(-13551.71 -1277.69)" fill="#6a6c6d"/>
+          </g>
+        </g>
+        <g id="Close_Dark_-_Large_-_Disabled-2" data-name="Close Dark - Large - Disabled" transform="translate(188.997 364.986)">
+          <path id="Close-8" data-name="Close" d="M13605.369,1291.095l-5.665-5.665-5.638,5.638a.5.5,0,0,1-.707-.707l5.638-5.638-5.647-5.648a.5.5,0,0,1,.707-.71l5.648,5.651,5.675-5.674a.5.5,0,0,1,.706.707l-5.674,5.674,5.664,5.666a.5.5,0,0,1-.707.707Z" transform="translate(-13593.203 -1278.192)" fill="#959799"/>
+        </g>
+        <g id="Close_White_-_Small_-_Normal" data-name="Close White - Small - Normal" transform="translate(170.001 350.001)">
+          <g transform="matrix(1, 0, 0, 1, -22.5, -2.51)" filter="url(#Close-3)">
+            <path id="Close-9" data-name="Close" d="M13603.33,1289.055l-3.624-3.624-3.624,3.624a.512.512,0,0,1-.724-.724l3.623-3.625-3.623-3.623a.513.513,0,0,1,.724-.727l3.624,3.626,3.624-3.626a.513.513,0,0,1,.725.727l-3.624,3.623,3.624,3.625a.512.512,0,1,1-.725.724Z" transform="translate(-13572.71 -1277.69)" fill="#fff"/>
+          </g>
+        </g>
+        <g id="Close_White_-_Small_-_Disabled" data-name="Close White - Small - Disabled" transform="translate(170 367.001)">
+          <path id="Close-10" data-name="Close" d="M13603.33,1289.055l-3.624-3.624-3.624,3.624a.512.512,0,0,1-.724-.724l3.623-3.625-3.623-3.623a.513.513,0,0,1,.724-.727l3.624,3.626,3.624-3.626a.513.513,0,0,1,.725.727l-3.624,3.623,3.624,3.625a.512.512,0,1,1-.725.724Z" transform="translate(-13595.207 -1280.208)" fill="rgba(255,255,255,0.5)"/>
+        </g>
+        <g id="Close_Dark_-_Small_-_Normal" data-name="Close Dark - Small - Normal" transform="translate(149.001 350.001)">
+          <g transform="matrix(1, 0, 0, 1, -1.5, -2.51)" filter="url(#Close-4)">
+            <path id="Close-11" data-name="Close" d="M13603.33,1289.055l-3.624-3.624-3.624,3.624a.512.512,0,0,1-.724-.724l3.623-3.625-3.623-3.623a.513.513,0,0,1,.724-.727l3.624,3.626,3.624-3.626a.513.513,0,0,1,.725.727l-3.624,3.623,3.624,3.625a.512.512,0,1,1-.725.724Z" transform="translate(-13593.71 -1277.69)" fill="#6a6c6d"/>
+          </g>
+        </g>
+        <g id="Close_Dark_-_Small_-_Disabled" data-name="Close Dark - Small - Disabled" transform="translate(149 367.001)">
+          <path id="Close-12" data-name="Close" d="M13603.33,1289.055l-3.624-3.624-3.624,3.624a.512.512,0,0,1-.724-.724l3.623-3.625-3.623-3.623a.513.513,0,0,1,.724-.727l3.624,3.626,3.624-3.626a.513.513,0,0,1,.725.727l-3.624,3.623,3.624,3.625a.512.512,0,1,1-.725.724Z" transform="translate(-13595.207 -1280.208)" fill="#959799"/>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

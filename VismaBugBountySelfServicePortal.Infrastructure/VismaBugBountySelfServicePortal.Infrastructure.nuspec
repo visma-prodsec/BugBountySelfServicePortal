@@ -1,0 +1,15 @@
+﻿<?xml version="1.0"?>
+<package >
+ <metadata>
+   <id>VismaBugBountySelfServicePortal.Infrastructure</id>
+   <version>1.0</version>
+   <title>VismaBugBountySelfServicePortal.Infrastructure</title>
+   <authors>emilian.damian@visma.com</authors>
+   <description>Azure ARM infrastructure deployment package</description>
+   <tags>infrastructure</tags>
+ </metadata>
+ <files>
+   <file src=".\azuredeploy.json" target="" />
+   <file src=".\azuredeploy.parameters.json" target="" />
+ </files>
+</package>

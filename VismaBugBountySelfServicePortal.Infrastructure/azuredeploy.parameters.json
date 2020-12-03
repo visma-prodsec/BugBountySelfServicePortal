@@ -1,0 +1,129 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "appServiceName": {
+      "value": "#{ApplicationName}"
+    },
+    "location": {
+      "value": "#{ResourceGroupLocation}"
+    },
+    "resourceGroup": {
+      "value": "#{ResourceGroup}"
+    },
+    "appInsightsComponentNameType": {
+      "value": "web"
+    },
+    "appInsightsComponentNameRequestSource": {
+      "value": "rest"
+    },
+    "databaseServerName": {
+      "value": "#{DatabaseServer}"
+    },
+    "databaseServerLocation": {
+      "value": "#{DatabaseLocation}"
+    },
+    "databaseName": {
+      "value": "#{DatabaseName}"
+    },
+    "databaseSkuTier": {
+      "value": "#{DatabaseSkuTier}"
+    },
+    "databaseSkuName": {
+      "value": "#{DatabaseSkuName}"
+    },
+    "databaseMaxSizeBytes": {
+      "value": 2147483648
+    },
+    "databaseServerallowAzureIps": {
+      "value": true
+    },
+    "databaseServerserverTags": {
+      "value": { "DatabaseServerFor": "#{DatabaseName}" }
+    },
+    "databaseServerLogin": {
+      "value": "#{DatabaseServerUser}"
+    },
+    "databaseServerPassword": {
+      "value": "#{DatabaseServerPassword}"
+    },
+    "databasePassword": {
+      "value": "#{DatabasePassword}"
+    },
+    "adminDatabasePassword": {
+      "value": "#{AdminDatabasePassword}"
+    },
+    "clientSecret": {
+      "value": "#{ClientSecret}"
+    },
+    "ipVismaSpcs": {
+      "value": "#{IPVismaSpcs}"
+    },
+    "appServicePlanSkuName": {
+      "value": "#{AppServicePlanSkuName}"
+    },
+    "appServicePlanSkuTier": {
+      "value": "#{AppServicePlanSkuTier}"
+    },
+    "appServicePlanSkuFamily": {
+      "value": "#{AppServicePlanSkuFamily}"
+    },
+    "appServicePlanSkuSize": {
+      "value": "#{AppServicePlanSkuSize}"
+    },
+    "keyVaultName": {
+      "value": "#{KeyVaultName}"
+    },
+    "keyVaultEnabledForDeployment": {
+      "value": false
+    },
+    "keyVaultEnabledForDiskEncryption": {
+      "value": false
+    },
+    "keyVaultEnabledForTemplateDeployment": {
+      "value": true
+    },
+    "keyVaultSkuName": {
+      "value": "#{KeyVaultSkuName}"
+    },
+    "keyVaultSkuFamily": {
+      "value": "#{KeyVaultSkuFamily}"
+    },
+    "logStorageAccountName": {
+      "value": "#{LogStorageAccountName}"
+    },
+    "logStorageAccountSkuName": {
+      "value": "#{LogStorageAccountSkuName}"
+    },
+    "logStorageAccountSkuTier": {
+      "value": "#{LogStorageAccountSkuTier}"
+    },
+    "logCollectorPrincipalId": {
+      "value": "#{LogCollectorPrincipalId}"
+    },
+    "eventHubNamespaceName": {
+      "value": "#{ActivityLogEventHubNamespaceName}"
+    },
+    "eventHubSkuName": {
+      "value": "#{ActivityLogEventHubSkuName}"
+    },
+    "eventHubSkuTier": {
+      "value": "#{ActivityLogEventHubSkuTier}"
+    },
+    "eventHubSkuCapacity": {
+      "value": 1
+    },
+    "emailPassword": {
+      "value": "#{EmailPassword}"
+    },
+    "privateProgramPassword": {
+      "value": "#{PrivateProgramPassword}"
+    },
+    "publicProgramPassword": {
+      "value": "#{PublicProgramPassword}"
+    },
+		"apiKey": {
+			"value": "#{ApiKey}"
+		}
+  }
+}

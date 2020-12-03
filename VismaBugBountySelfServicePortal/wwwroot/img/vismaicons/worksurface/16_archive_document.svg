@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="100" height="16" viewBox="0 0 100 16">
+  <title>16_archive_document</title>
+  <g id="Archive_Document" data-name="Archive Document">
+    <g id="Normal">
+      <path d="M10.5,0H1V16H14V3.5ZM13,15H2V1H5V2H3V3H5V4H3V5H5V6H8V5H6V4H8V3H6V2H8V1H9V5h4ZM10,4V1l3,3ZM4,7a35.77,35.77,0,0,0-1,5,2.29,2.29,0,0,0,2.5,2A2.29,2.29,0,0,0,8,12,35.77,35.77,0,0,0,7,7c0-.67-.2-1-1.5-1S4,6.33,4,7Zm1.5,3A1.5,1.5,0,1,1,4,11.5,1.5,1.5,0,0,1,5.5,10Z" style="fill: #0089d9;fill-rule: evenodd"/>
+    </g>
+    <g id="Disabled">
+      <path d="M25,7a35.77,35.77,0,0,0-1,5,2.29,2.29,0,0,0,2.5,2A2.29,2.29,0,0,0,29,12a35.77,35.77,0,0,0-1-5c0-.67-.2-1-1.5-1S25,6.33,25,7Zm1.5,3A1.5,1.5,0,1,1,25,11.5,1.5,1.5,0,0,1,26.5,10Zm5-10H22V16H35V3.5ZM34,15H23V1h3V2H24V3h2V4H24V5h2V6h3V5H27V4h2V3H27V2h2V1h1V5h4ZM31,4V1l3,3Z" style="fill: #c8c8c8;fill-rule: evenodd"/>
+    </g>
+    <g id="Hover">
+      <path d="M52.5,0H43V16H56V3.5ZM55,15H44V1h3V2H45V3h2V4H45V5h2V6h3V5H48V4h2V3H48V2h2V1h1V5h4ZM52,4V1l3,3ZM46,7a35.77,35.77,0,0,0-1,5,2.56,2.56,0,0,0,5,0,35.77,35.77,0,0,0-1-5c0-.67-.2-1-1.5-1S46,6.33,46,7Zm1.5,3A1.5,1.5,0,1,1,46,11.5,1.5,1.5,0,0,1,47.5,10Z" style="fill: #39a6e6;fill-rule: evenodd"/>
+    </g>
+    <g id="White">
+      <path d="M67,7a35.77,35.77,0,0,0-1,5,2.56,2.56,0,0,0,5,0,35.77,35.77,0,0,0-1-5c0-.67-.2-1-1.5-1S67,6.33,67,7Zm1.5,3A1.5,1.5,0,1,1,67,11.5,1.5,1.5,0,0,1,68.5,10Zm5-10H64V16H77V3.5ZM76,15H65V1h3V2H66V3h2V4H66V5h2V6h3V5H69V4h2V3H69V2h2V1h1V5h4ZM73,4V1l3,3Z" style="fill: #fff;fill-rule: evenodd"/>
+    </g>
+    <g id="DarkGrey">
+      <path d="M94.5,0H85V16H98V3.5ZM97,15H86V1h3V2H87V3h2V4H87V5h2V6h3V5H90V4h2V3H90V2h2V1h1V5h4ZM94,4V1l3,3ZM88,7a35.77,35.77,0,0,0-1,5,2.56,2.56,0,0,0,5,0,35.77,35.77,0,0,0-1-5c0-.67-.2-1-1.5-1S88,6.33,88,7Zm1.5,3A1.5,1.5,0,1,1,88,11.5,1.5,1.5,0,0,1,89.5,10Z" style="fill: #737373;fill-rule: evenodd"/>
+    </g>
+  </g>
+</svg>
