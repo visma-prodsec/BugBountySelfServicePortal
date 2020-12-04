@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VismaBugBountySelfServicePortal.Database;
 
 namespace VismaBugBountySelfServicePortal.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    // ReSharper disable once PartialTypeWithSinglePart
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201203141246_AddUserSession")]
+    partial class AddUserSession
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -102,13 +104,10 @@ namespace VismaBugBountySelfServicePortal.Migrations
                         .HasColumnName("Email")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<Guid>("SessionId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<DateTime>("LoginDateTime")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("Key", "SessionId");
+                    b.HasKey("Key");
 
                     b.ToTable("UserSession");
                 });

@@ -12,10 +12,10 @@ namespace VismaBugBountySelfServicePortal.Database
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<AssetEntity>().ToTable("Asset");
-            modelBuilder.Entity<CredentialEntity>().ToTable("Credential").HasKey(c=>new {c.Key, c.AssetName});
-            modelBuilder.Entity<CredentialValueEntity>().ToTable("CredentialValue").HasKey(c => new { c.AssetName, c.Key,  c.RowNumber, c.ColumnName });
+            modelBuilder.Entity<CredentialEntity>().ToTable("Credential").HasKey(c => new { c.Key, c.AssetName });
+            modelBuilder.Entity<CredentialValueEntity>().ToTable("CredentialValue").HasKey(c => new { c.AssetName, c.Key, c.RowNumber, c.ColumnName });
             modelBuilder.Entity<UserEntity>().ToTable("User");
-            modelBuilder.Entity<UserSessionEntity>().ToTable("UserSession");
+            modelBuilder.Entity<UserSessionEntity>().ToTable("UserSession").HasKey(s => new { s.Key, s.SessionId });
             base.OnModelCreating(modelBuilder);
         }
     }
