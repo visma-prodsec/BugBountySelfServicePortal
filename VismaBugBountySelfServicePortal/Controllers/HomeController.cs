@@ -57,7 +57,7 @@ namespace VismaBugBountySelfServicePortal.Controllers
 
         public IActionResult Unauthorized(string returnUrl)
         {
-            _logger.LogWarning($"Unauthorized user {User?.Identity?.Name} {User?.Claims?.FirstOrDefault(x => x.Type == "email")?.Value} tries to access {returnUrl}");
+            _logger.LogWarning($"Unauthorized user {User?.Identity?.Name} {User?.Claims.FirstOrDefault(x => x.Type == "email")?.Value} tries to access {returnUrl}");
             return View("Unauthorized");
         }
         

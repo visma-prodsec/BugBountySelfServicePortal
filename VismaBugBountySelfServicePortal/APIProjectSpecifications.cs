@@ -52,7 +52,9 @@ namespace VismaBugBountySelfServicePortal
             services.AddScoped<IAssetService, AssetService>();
             services.AddTransient<IClaimsTransformation, ClaimsTransformer>();
             services.AddScoped<IEmailSender, EmailSender>();
-            services.AddScoped<IHackerOneService, HackerOneService>();
+            services.AddScoped<IProviderFactory, ProviderFactory>();
+            services.AddScoped<HackerOneService>().AddScoped<IProviderService, HackerOneService>(s=>s.GetService<HackerOneService>());
+            services.AddScoped<IntigritiService>().AddScoped<IProviderService, IntigritiService>(s => s.GetService<IntigritiService>());
             services.AddHttpContextAccessor();
             services.AddEntityFrameworkSqlServer();
         }

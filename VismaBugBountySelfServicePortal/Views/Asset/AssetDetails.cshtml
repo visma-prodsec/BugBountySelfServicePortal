@@ -10,10 +10,10 @@
 
     @if (Model != null)
     {
-            <div>
-                <div class="float-left"><h3>@Model.AssetName</h3></div>
-                <a asp-action="Assets" class="btn btn-primary float-right left">Back</a>
-            </div>
+        <div>
+            <div class="float-left"><h3>@Model.AssetName</h3></div>
+            <a asp-action="Assets" class="btn btn-primary float-right left">Back</a>
+        </div>
         <div class="credentialDetails">
             <table class="list-group w-100 credentialDetails">
                 <thead>
@@ -23,6 +23,10 @@
                             <th class="th-blue">@column</th>
                         }
                         <th class="th-blue">Hacker</th>
+                        @if (ViewBag.ShowTransferredInfo)
+                        {
+                            <th class="th-blue">Transferred</th>
+                        }
                     </tr>
                 </thead>
                 @foreach (var credential in Model.Credentials)
@@ -35,10 +39,14 @@
                                 <td>@credentialRow.Value.FirstOrDefault(c => c.ColumnName == column).ColumnValue</td>
                             }
                             <td>@credential.HackerName</td>
+                            @if (ViewBag.ShowTransferredInfo)
+                            {
+                                <td>@(credential.Transferred.HasValue ? ((credential.Transferred != null && credential.Transferred.Value) ? "YES" : "NO") : "")</td>
+                            }
                         </tr>
                     }
                     <tr>
-                        <td style="height: 1px" colspan="@(Model.Columns.Count + 1)">
+                        <td style="height: 1px" colspan="@(Model.Columns.Count + 1 + (ViewBag.ShowTransferredInfo ? 1: 0))">
                             <hr style="height: 1px; color: lightgray" />
                         </td>
                     </tr>

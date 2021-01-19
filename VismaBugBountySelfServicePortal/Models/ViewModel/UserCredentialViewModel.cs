@@ -15,6 +15,7 @@ namespace VismaBugBountySelfServicePortal.Models.ViewModel
     {
         public string SetId { get; set; }
         public string HackerName { get; set; }
+        public bool? Transferred { get; set; }
         public Dictionary<int, List<(string ColumnName, string ColumnValue)>> Rows;
     }
 }

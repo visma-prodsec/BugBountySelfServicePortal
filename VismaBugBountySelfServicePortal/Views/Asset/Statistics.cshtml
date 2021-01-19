@@ -1,0 +1,99 @@
+﻿@model VismaBugBountySelfServicePortal.Models.ViewModel.StatisticsViewModel;
+
+
+@{
+    ViewBag.Title = "Statistics";
+    Layout = "_Layout";
+}
+<div class="userCredentialsGrid">
+    <div>
+        <h1>Statistics</h1>
+    </div>
+
+    <div class="w-100 text-right">
+        <a asp-action="Assets" class="btn btn-primary left">Back</a>
+    </div>
+    <div class="credentialDetails">
+        <b>@Model.ResearchersTransferred Researchers transferred / @Model.ResearchersTotal total Researchers.</b>
+        <br />
+        <b>Credentials requested in last:</b>
+        <table>
+            <tr>
+                @foreach (var (noOfDays, _) in Model.CredentialsRequestedCount)
+                {
+                    <th>@noOfDays days:</th>
+                }
+            </tr>
+            <tr>
+                @foreach (var (_, count) in Model.CredentialsRequestedCount)
+                {
+                    <td>@count</td>
+                }
+            </tr>
+        </table>
+        <br />
+        <b>Logins in last:</b>
+        <table>
+            <tr>
+                @foreach (var (noOfDays, _) in Model.LoginCounts)
+                {
+                    <th>@noOfDays days:</th>
+                }
+            </tr>
+            <tr>
+                @foreach (var (_, count) in Model.LoginCounts)
+                {
+                    <td>@count</td>
+                }
+            </tr>
+        </table>
+        <br />
+        <b>Top 3 Assets most credentials requests:</b>
+        <table>
+            <tr>
+                <th>Asset</th>
+                <th>Count</th>
+            </tr>
+            @foreach (var (assetName, count) in Model.CredentialsPerAssetCount.OrderByDescending(x => x.Value).Take(3))
+            {
+                <tr><td>@assetName</td><td>@count</td></tr>
+            }
+        </table>
+        <br />
+        <b>Top 3 Assets less credentials requests:</b>
+        <table>
+            <tr>
+                <th>Asset</th>
+                <th>Count</th>
+            </tr>
+            @foreach (var (assetName, count) in Model.CredentialsPerAssetCount.OrderBy(x => x.Value).Take(3))
+            {
+                <tr><td>@assetName</td><td>@count</td></tr>
+            }
+        </table>
+        <br />
+        <b>Top 3 Researchers most credentials requests:</b>
+        <table>
+            <tr>
+                <th>Researcher</th>
+                <th>Count</th>
+            </tr>
+            @foreach (var (assetName, count) in Model.CredentialsPerResearcherCount.OrderByDescending(x => x.Value).Take(3))
+            {
+                <tr><td>@assetName</td><td>@count</td></tr>
+            }
+        </table>
+        <br />
+        <b>Top 3 Researchers less credentials requests:</b>
+        <table>
+            <tr>
+                <th>Researcher</th>
+                <th>Count</th>
+            </tr>
+            @foreach (var (researcher, count) in Model.CredentialsPerResearcherCount.OrderBy(x => x.Value).Take(3))
+            {
+                <tr><td>@researcher</td><td>@count</td></tr>
+            }
+        </table>
+    </div>
+</div>

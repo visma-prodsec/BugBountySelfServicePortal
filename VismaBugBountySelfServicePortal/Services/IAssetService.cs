@@ -16,5 +16,6 @@ namespace VismaBugBountySelfServicePortal.Services
         Task SyncAssets();
         Task<IEnumerable<object>> GetAssetCredentialsForExport(string assetName);
         Task DeleteAsset(string deleteAssetId);
+        Task<StatisticsViewModel> GetStatistics();
     }
 }

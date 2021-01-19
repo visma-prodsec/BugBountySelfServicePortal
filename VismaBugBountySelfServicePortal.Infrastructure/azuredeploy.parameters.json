@@ -124,6 +124,9 @@
     },
 		"apiKey": {
 			"value": "#{ApiKey}"
+		},
+		"intigritiSecret": {
+			"value": "#{IntigritiSecret}"
 		}
-  }
+	}
 }

@@ -2,6 +2,8 @@
 
 This is a solution to help Bug Bounty team in providing credentials to the researchers to test new services added to the Bug Bounty program.
 
+It supports HackerOne and Intigriti platforms, also the transfer of credentials/users from one platform to the another.
+
 As an administrator, you can see the number of unclaimed credentials for each service, and receive a warning when one is dangerously low.
 
 You can import a new set of credentials from a CSV file, add new service, view credentials for a service, view credentials assigned to a researcher.
@@ -36,6 +38,7 @@ List of secrets:
   "AdminDatabasePassword": "",
   "PrivateProgramPassword": "",
   "PublicProgramPassword": "",
-  "ApiKey": ""
+  "ApiKey": "",
+  "IntigritiSecret": ""
 }
 ```

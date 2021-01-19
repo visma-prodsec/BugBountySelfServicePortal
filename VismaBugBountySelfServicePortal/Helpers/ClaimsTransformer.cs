@@ -12,7 +12,7 @@ namespace VismaBugBountySelfServicePortal.Helpers
         private readonly IConfiguration _configuration;
         private readonly IUserService _userService;
         private readonly ILogger<ClaimsTransformer> _logger;
-        
+
 
         public ClaimsTransformer(IConfiguration configuration, IUserService userService, ILogger<ClaimsTransformer> logger)
         {
@@ -29,12 +29,13 @@ namespace VismaBugBountySelfServicePortal.Helpers
                 return principal;
             var email = id.Claims.GetEmail();
 
-            if (string.IsNullOrWhiteSpace(email) || !email.EndsWith(_configuration["HackerEmailDomain"]) && !email.EndsWith(_configuration["AdminEmailDomain"]))
+            if (string.IsNullOrWhiteSpace(email) || !email.EndsWith(_configuration["HackerOneHackerEmailDomain"]) && !email.EndsWith(_configuration["IntigritiHackerEmailDomain"])
+                && !email.EndsWith(_configuration["AdminEmailDomain"]))
             {
                 _logger.LogWarning($"Unauthorized user tried to logon: {email}");
                 return principal;
             }
-            
+
             var role = "";
             if (email.EndsWith(_configuration["AdminEmailDomain"]))
             {
@@ -47,10 +48,12 @@ namespace VismaBugBountySelfServicePortal.Helpers
                 }
             }
 
-            if (email.EndsWith(_configuration["HackerEmailDomain"]))
+            if (email.EndsWith(_configuration["HackerOneHackerEmailDomain"]) || email.EndsWith(_configuration["IntigritiHackerEmailDomain"]))
             {
                 role = Const.HackerRole;
-                id.AddClaim(new Claim(Const.ClaimTypeHackerName, email.Split("@")[0].Split("+")[0]));
+                id.AddClaim(new Claim(Const.ClaimTypeHackerName, email.Split('@', '-', '+')[0]));
+                if (!email.EndsWith(_configuration["ProviderEmailDomain"]))
+                    id.AddClaim(new Claim(Const.ClaimTypeObsoleteDomain, "1"));
             }
 
             ((ClaimsIdentity)principal.Identity)?.AddClaim(new Claim(ClaimTypes.Role, role));

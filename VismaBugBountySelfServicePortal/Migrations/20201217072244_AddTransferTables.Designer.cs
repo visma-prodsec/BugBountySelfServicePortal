@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VismaBugBountySelfServicePortal.Database;
 
 namespace VismaBugBountySelfServicePortal.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    // ReSharper disable once PartialTypeWithSinglePart
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201217072244_AddTransferTables")]
+    partial class AddTransferTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -86,26 +88,6 @@ namespace VismaBugBountySelfServicePortal.Migrations
                     b.HasKey("AssetName", "Key", "RowNumber", "ColumnName");
 
                     b.ToTable("CredentialValue");
-                });
-
-            modelBuilder.Entity("VismaBugBountySelfServicePortal.Models.Entity.RequestCredentialHistoryEntity", b =>
-                {
-                    b.Property<string>("Key")
-                        .HasColumnName("SetId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("AssetName")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("HackerName")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("RequestDateTime")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Key", "AssetName", "HackerName");
-
-                    b.ToTable("RequestCredentialHistory");
                 });
 
             modelBuilder.Entity("VismaBugBountySelfServicePortal.Models.Entity.TransferCredentialHistoryEntity", b =>

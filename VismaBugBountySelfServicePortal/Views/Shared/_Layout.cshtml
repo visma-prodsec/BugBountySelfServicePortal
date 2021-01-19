@@ -30,7 +30,7 @@
 
         <nav class="collapse navbar-collapse" aria-label="Menu">
             <ul class="nav navbar-nav nav-tabs navbar-right first-level">
-                @if (User.Identity.IsAuthenticated)
+                @if (User.Identity != null && User.Identity.IsAuthenticated)
                 {
                     <li role="menuitem">
                         <form asp-action="Logout" asp-controller="Home" method="post" asp-antiforgery="true" id="logoutForm">

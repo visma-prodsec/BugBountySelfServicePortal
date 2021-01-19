@@ -38,7 +38,7 @@ namespace VismaBugBountySelfServicePortal
         {
             services.Configure<CookiePolicyOptions>(options =>
             {
-                options.CheckConsentNeeded = context => true;
+                options.CheckConsentNeeded = _ => true;
                 options.MinimumSameSitePolicy = SameSiteMode.Strict;
             });
             services.AddControllersWithViews();
@@ -58,9 +58,9 @@ namespace VismaBugBountySelfServicePortal
                             var scopeFactory = provider.GetRequiredService<IServiceScopeFactory>();
                             using var scope = scopeFactory.CreateScope();
                             var userService = scope.ServiceProvider.GetService<IUserService>();
-                            var email = context.Principal.Claims.GetEmail();
+                            var email = context.Principal?.Claims.GetEmail();
 
-                            if (!userService.IsValidSession(email).GetAwaiter().GetResult())
+                            if (userService != null && !userService.IsValidSession(email).GetAwaiter().GetResult())
                                 context.RejectPrincipal();
                             return Task.CompletedTask;
                         }
@@ -90,7 +90,7 @@ namespace VismaBugBountySelfServicePortal
                           var scopeFactory = provider.GetRequiredService<IServiceScopeFactory>();
                           using var scope = scopeFactory.CreateScope();
                           var userService = scope.ServiceProvider.GetService<IUserService>();
-                          userService.SaveSession(email).GetAwaiter().GetResult();
+                          userService?.SaveSession(email).GetAwaiter().GetResult();
                           return Task.CompletedTask;
                       },
                   };

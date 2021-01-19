@@ -12,14 +12,16 @@ namespace VismaBugBountySelfServicePortal.Services
     {
         private readonly IRepository<UserEntity> _repository;
         private readonly IRepository<UserSessionEntity> _repositorySession;
+        private readonly IRepository<UserSessionHistoryEntity> _repositorySessionHistory;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private const string SessionCookieName = "sessId";
         private static readonly Dictionary<string, string> TempSession = new Dictionary<string, string>();
-
+        
         public UserService(IDatabaseLayer databaseLayer, IHttpContextAccessor httpContextAccessor)
         {
             _repository = databaseLayer.Repo<UserEntity>();
             _repositorySession = databaseLayer.Repo<UserSessionEntity>();
+            _repositorySessionHistory = databaseLayer.Repo<UserSessionHistoryEntity>();
             _httpContextAccessor = httpContextAccessor;
         }
         public async Task<bool> UserExist(string email)
@@ -32,6 +34,8 @@ namespace VismaBugBountySelfServicePortal.Services
             var sessionId = Guid.NewGuid();
             var userSession = new UserSessionEntity { Key = email, LoginDateTime = DateTime.UtcNow, SessionId = sessionId };
             await _repositorySession.Add(userSession);
+            var userSessionHistory = new UserSessionHistoryEntity {Key = email, LoginDateTime = userSession.LoginDateTime, SessionId = sessionId};
+            await _repositorySessionHistory.Add(userSessionHistory);
             var options = new CookieOptions
             {
                 HttpOnly = true,
@@ -40,7 +44,7 @@ namespace VismaBugBountySelfServicePortal.Services
                 Expires = DateTime.Now.AddHours(1),
                 IsEssential = true
             };
-            _httpContextAccessor.HttpContext.Response.Cookies.Append(SessionCookieName, sessionId.ToString(), options);
+            _httpContextAccessor.HttpContext?.Response.Cookies.Append(SessionCookieName, sessionId.ToString(), options);
             TempSession[email] = sessionId.ToString();
         }
 
@@ -51,12 +55,12 @@ namespace VismaBugBountySelfServicePortal.Services
             {
                 await _repositorySession.Delete(session.Key);
             }
-            _httpContextAccessor.HttpContext.Response.Cookies.Delete(SessionCookieName);
+            _httpContextAccessor.HttpContext?.Response.Cookies.Delete(SessionCookieName);
         }
 
         public async Task<bool> IsValidSession(string email)
         {
-            var cookie = _httpContextAccessor.HttpContext.Request.Cookies.ContainsKey(SessionCookieName) ? _httpContextAccessor.HttpContext.Request.Cookies[SessionCookieName] : null;
+            var cookie = _httpContextAccessor.HttpContext != null && _httpContextAccessor.HttpContext.Request.Cookies.ContainsKey(SessionCookieName) ? _httpContextAccessor.HttpContext.Request.Cookies[SessionCookieName] : null;
             //cookie is not set right away, so we need this logic to check that session id is ok just before login
             if (TempSession.ContainsKey(email))
             {

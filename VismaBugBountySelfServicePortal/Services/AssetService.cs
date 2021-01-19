@@ -27,43 +27,40 @@ namespace VismaBugBountySelfServicePortal.Services
         private readonly IRepository<CredentialEntity> _credentialRepository;
         private readonly IRepository<CredentialValueEntity> _credentialValueRepository;
         private readonly IConfiguration _configuration;
-        private readonly IHackerOneService _hackerOneService;
+        private readonly IProviderFactory _providerFactory;
+        private readonly IDatabaseLayer _databaseLayer;
+
         private string SetIdColumn => _configuration["SetIdColumn"];
         private string HackerNameColumn => _configuration["HackerNameColumn"];
 
-        public AssetService(IDatabaseLayer databaseLayer, IConfiguration configuration, ILogger<AssetService> logger, IHackerOneService hackerOneService)
+        public AssetService(IDatabaseLayer databaseLayer, IConfiguration configuration, ILogger<AssetService> logger, IProviderFactory providerFactory)
         {
+            _databaseLayer = databaseLayer;
             _assetRepository = databaseLayer.Repo<AssetEntity>();
             _credentialValueRepository = databaseLayer.Repo<CredentialValueEntity>();
             _credentialRepository = databaseLayer.Repo<CredentialEntity>();
             _configuration = configuration;
             _logger = logger;
-            _hackerOneService = hackerOneService;
+            _providerFactory = providerFactory;
         }
 
         public async Task<IEnumerable<AssetViewModel>> GetAssets()
         {
-            var assets = await (
-                from asset in _assetRepository.DbSet
-                join allCredentials in (from credentialsAll in _credentialRepository.DbSet.GroupBy(x => x.AssetName)
-                                        select new { credentialsAll.Key, Cnt = credentialsAll.Count() }) on asset.Key equals allCredentials.Key into allCred
-                from p in allCred.DefaultIfEmpty()
-                join freeCredentials in (from credentialsAll in _credentialRepository.DbSet.Where(x => string.IsNullOrWhiteSpace(x.HackerName)).GroupBy(x => x.AssetName)
-                                         select new { credentialsAll.Key, Cnt = credentialsAll.Count() }) on asset.Key equals freeCredentials.Key into freeCred
-                from f in freeCred.DefaultIfEmpty()
-                select new AssetViewModel
-                {
-                    Name = asset.Key,
-                    Description = asset.Description,
-                    IsVisible = asset.IsVisible,
-                    IsOnHackerOne = asset.IsOnHackerOne,
-                    IsOnPublicProgram = asset.IsOnPublicProgram,
-                    Free = f.Cnt,
-                    Total = p.Cnt
-                }
+            var allAssets = await _assetRepository.DbSet.AsNoTracking().Select(a=>new {a.Key, a.Description, a.IsVisible, a.IsOnHackerOne, a.IsOnPublicProgram}).ToListAsync();
+            var credentials = (await _credentialRepository.DbSet.AsNoTracking().GroupBy(c => c.AssetName)
+                    .Select(x => new { x.Key, Total = x.Count(), Free = x.Count(r => string.IsNullOrWhiteSpace(r.HackerName)) }).ToListAsync())
+                    .ToDictionary(k => k.Key, i => new { i.Total, i.Free });
 
-            ).ToListAsync();
-            return assets;
+            return allAssets.Select(asset => new AssetViewModel
+            {
+                Name = asset.Key,
+                Description = asset.Description,
+                IsVisible = asset.IsVisible,
+                IsOnHackerOne = asset.IsOnHackerOne,
+                IsOnPublicProgram = asset.IsOnPublicProgram,
+                Free = credentials.ContainsKey(asset.Key) ? credentials[asset.Key].Free : 0,
+                Total = credentials.ContainsKey(asset.Key) ? credentials[asset.Key].Total : 0
+            });
         }
 
         public async Task<IEnumerable<object>> GetAssetCredentialsForExport(string assetName)
@@ -118,6 +115,32 @@ namespace VismaBugBountySelfServicePortal.Services
             }
         }
 
+        public async Task<StatisticsViewModel> GetStatistics()
+        {
+            var statistics = new StatisticsViewModel { CredentialsPerAssetCount = new Dictionary<string, int>(), CredentialsPerResearcherCount = new Dictionary<string, int>() };
+            var researchers = await _credentialRepository.DbSet.GroupBy(x => new { x.HackerName, x.Transferred }).Select(x => x.Key).ToListAsync();
+            statistics.ResearchersTotal = researchers.Count;
+            statistics.ResearchersTransferred = researchers.Count(x => x.Transferred.HasValue && x.Transferred.Value);
+            var logins = await _databaseLayer.Repo<UserSessionHistoryEntity>().DbSet.Where(x => x.LoginDateTime >= DateTime.UtcNow.AddDays(-60)).Select(x => new { x.Key, x.LoginDateTime }).ToListAsync();
+            statistics.LoginCounts = new Dictionary<int, int>
+            {
+                {7, logins.Where(x => x.LoginDateTime >= DateTime.UtcNow.AddDays(-7)).Select(a => a.Key).Distinct().Count()},
+                {30, logins.Where(x => x.LoginDateTime >= DateTime.UtcNow.AddDays(-30)).Select(a => a.Key).Distinct().Count()},
+                {60, logins.Where(x => x.LoginDateTime >= DateTime.UtcNow.AddDays(-60)).Select(a => a.Key).Distinct().Count()}
+            };
+            var requests = await _databaseLayer.Repo<RequestCredentialHistoryEntity>().DbSet.Where(x => x.RequestDateTime >= DateTime.UtcNow.AddDays(-60)).Select(x => new { x.Key, x.RequestDateTime }).ToListAsync();
+            statistics.CredentialsRequestedCount = new Dictionary<int, int>
+            {
+                {7, requests.Where(x => x.RequestDateTime >= DateTime.UtcNow.AddDays(-7)).Select(a => a.Key).Distinct().Count()},
+                {30, requests.Where(x => x.RequestDateTime >= DateTime.UtcNow.AddDays(-30)).Select(a => a.Key).Distinct().Count()},
+                {60, requests.Where(x => x.RequestDateTime >= DateTime.UtcNow.AddDays(-60)).Select(a => a.Key).Distinct().Count()}
+            };
+            var researcherAndAssetRequests = await _credentialRepository.DbSet.Where(x => !string.IsNullOrWhiteSpace(x.HackerName)).Select(x => new { x.AssetName, x.HackerName }).ToListAsync();
+            statistics.CredentialsPerAssetCount = researcherAndAssetRequests.GroupBy(x => x.AssetName).ToDictionary(k => k.Key, k => k.Count());
+            statistics.CredentialsPerResearcherCount = researcherAndAssetRequests.GroupBy(x => x.HackerName).ToDictionary(k => k.Key, k => k.Count());
+            return statistics;
+        }
+
         public async Task<UserCredentialViewModel> GetAssetCredentials(string selectedAsset)
         {
             var asset = await _assetRepository.FindOne(x => x.Key == selectedAsset);
@@ -140,7 +163,8 @@ namespace VismaBugBountySelfServicePortal.Services
                 var credentialsViewModel = new CredentialsViewModel
                 {
                     Rows = new Dictionary<int, List<(string ColumnName, string ColumnValue)>>(),
-                    HackerName = credentialEntity.Key.HackerName
+                    HackerName = credentialEntity.Key.HackerName,
+                    Transferred = credentialEntity.Key.Transferred
                 };
                 foreach (var row in credentialEntity.Select(x => x.CredentialValue))
                 {
@@ -235,8 +259,9 @@ namespace VismaBugBountySelfServicePortal.Services
 
         public async Task SyncAssets()
         {
-            var privateHackerOneAssets = await _hackerOneService.GetAssets(true);
-            var publicHackerOneAssets = await _hackerOneService.GetAssets(false);
+            var providerService = _providerFactory.GetProviderService(_configuration["ProviderEmailDomain"]);
+            var privateHackerOneAssets = await providerService.GetAssets(true);
+            var publicHackerOneAssets = await providerService.GetAssets(false);
             var assets = await _assetRepository.GetAll();
             foreach (var asset in assets)
             {
@@ -359,7 +384,7 @@ namespace VismaBugBountySelfServicePortal.Services
 
             using var reader = new StreamReader(file.OpenReadStream(), Encoding.UTF8);
             var firstLine = true;
-            var header = new string[] { };
+            var header = Array.Empty<string>();
             while (!reader.EndOfStream)
             {
                 var line = await reader.ReadLineAsync();

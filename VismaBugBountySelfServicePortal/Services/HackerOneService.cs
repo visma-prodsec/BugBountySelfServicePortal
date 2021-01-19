@@ -13,7 +13,7 @@ using VismaBugBountySelfServicePortal.Models.HackerOneApi;
 
 namespace VismaBugBountySelfServicePortal.Services
 {
-    public class HackerOneService : IHackerOneService
+    public class HackerOneService : IProviderService
     {
         private readonly IConfiguration _configuration;
         private readonly ILogger<HackerOneService> _logger;
@@ -93,7 +93,7 @@ namespace VismaBugBountySelfServicePortal.Services
             }
         }
 
-        private string Base64Encode(string plainText)
+        private static string Base64Encode(string plainText)
         {
             var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainText);
             return Convert.ToBase64String(plainTextBytes);

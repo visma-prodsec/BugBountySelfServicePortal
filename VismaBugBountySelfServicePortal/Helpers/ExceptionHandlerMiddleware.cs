@@ -54,7 +54,7 @@ namespace VismaBugBountySelfServicePortal.Helpers
                     throw;
                 }
 
-                var routeData = context.GetRouteData() ?? new RouteData();
+                var routeData = context.GetRouteData();
 
                 ClearCacheHeaders(context.Response);
 
@@ -76,7 +76,7 @@ namespace VismaBugBountySelfServicePortal.Helpers
                     throw;
                 }
 
-                var routeData = context.GetRouteData() ?? new RouteData();
+                var routeData = context.GetRouteData();
 
                 ClearCacheHeaders(context.Response);
 

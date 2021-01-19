@@ -30,9 +30,10 @@
         }
         <div class="form-group text-right">
             <form asp-controller="Asset" asp-action="SyncAssets" method="post" asp-antiforgery="true">
-                <input id="syncAssets" type="submit" class="btn btn-primary" value="Sync with H1" onclick="showCover()" />
+                <input id="syncAssets" type="submit" class="btn btn-primary" value="Sync with BB platform" onclick="showCover()" />
                 <input id="addAsset" type="button" class="btn btn-primary" value="Add" onclick="loadAsset('');return false;" />
                 <a asp-action="UserAssetCredentials" class="btn btn-primary" type="button">View User</a>
+                <a asp-action="Statistics" class="btn btn-primary" type="button">Statistics</a>
             </form>
         </div>
     </div>
@@ -47,7 +48,7 @@
                 <tr>
                     <th>Asset</th>
                     <th class="text-center">Visible</th>
-                    <th class="text-center">On H1</th>
+                    <th class="text-center">On BB Platform</th>
                     <th class="text-center">On Public</th>
                     <th class="text-right">% Available</th>
                     <th class="text-right">Free</th>
@@ -70,7 +71,7 @@
                             </div>
                         </form>
                     </td>
-                    <td class="text-right">
+                    <td class="text-center">
                         <div class="checkbox checkbox-inline disabled">
                             <input type="checkbox" @(asset.IsOnHackerOne ? "checked = checked" : "") id="chk" disabled="disabled" />
                             <label for="chk"></label>

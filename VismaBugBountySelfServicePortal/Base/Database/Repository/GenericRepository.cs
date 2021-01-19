@@ -170,7 +170,7 @@ namespace VismaBugBountySelfServicePortal.Base.Database.Repository
         {
             if (predicate == null)
             {
-                return await _queryable.CountAsync() > 0;
+                return await _queryable.AnyAsync();
             }
 
             return await _queryable.AnyAsync(predicate);

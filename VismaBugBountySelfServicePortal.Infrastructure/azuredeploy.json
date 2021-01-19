@@ -127,6 +127,9 @@
     "apiKey": {
       "type": "securestring"
     },
+    "intigritiSecret": {
+      "type": "securestring"
+    },
     "logCollectorPrincipalId": {
       "type": "string",
       "defaultValue": ""
@@ -228,7 +231,8 @@
       "type": "Microsoft.Web/sites/config",
       "name": "[concat(parameters('appServiceName'),'/logs')]",
       "dependsOn": [
-        "[concat('Microsoft.Web/sites/', parameters('appServiceName'))]"
+        "[concat('Microsoft.Web/sites/', parameters('appServiceName'))]",
+        "[resourceId('Microsoft.Web/sites/config', parameters('appServiceName'),'appsettings')]"
       ],
       "properties": {
         "httpLogs": {
@@ -263,8 +267,7 @@
           ],
           "properties": {
             "publicAccess": "None"
-          }
-          ,
+          },
           "resources": [
             {
               "type": "Microsoft.Storage/storageAccounts/blobServices/containers/providers/roleAssignments",
@@ -425,8 +428,7 @@
         "capacity": "[parameters('eventHubSkuCapacity')]"
       },
       "properties": {
-      }
-      ,
+      },
       "resources": [
         {
           "type": "Microsoft.EventHub/namespaces/providers/roleAssignments",
@@ -488,6 +490,18 @@
       ],
       "properties": {
         "value": "[parameters('apiKey')]"
+      }
+    },
+    {
+      "type": "Microsoft.KeyVault/vaults/secrets",
+      "name": "[concat(parameters('keyVaultName'), '/', 'IntigritiSecret')]",
+      "apiVersion": "2016-10-01",
+      "location": "[parameters('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.KeyVault/vaults', parameters('keyVaultName'))]"
+      ],
+      "properties": {
+        "value": "[parameters('intigritiSecret')]"
       }
     }
   ]

@@ -5,5 +5,6 @@
         public const string AdminRole = "Admin";
         public const string HackerRole = "Hacker";
         public const string ClaimTypeHackerName = "HackerName";
+        public const string ClaimTypeObsoleteDomain = "ObsoleteDomain";
     }
 }

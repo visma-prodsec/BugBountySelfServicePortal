@@ -56,7 +56,7 @@ namespace VismaBugBountySelfServicePortal.Controllers
         {
             if (string.IsNullOrWhiteSpace(assetName))
                 return RedirectToAction("Assets");
-
+            SetShowTransferredInfo();
             var model = await _assetService.GetAssetCredentials(assetName);
             if (model != null) return View(model);
             TempData["ErrorText"] = $"Asset {assetName} not found.";
@@ -157,6 +157,7 @@ namespace VismaBugBountySelfServicePortal.Controllers
         {
             if (string.IsNullOrWhiteSpace(searchText))
                 return View();
+            SetShowTransferredInfo();
             var model = (await _credentialService.GetCredentialsByAdmin(searchText)).ToList();
             return model.FirstOrDefault(x => x.Credentials.Count > 0) == null ? View() : View(model.ToArray());
         }
@@ -167,6 +168,19 @@ namespace VismaBugBountySelfServicePortal.Controllers
         {
             await _assetService.DeleteAsset(deleteAssetId);
             return RedirectToAction("Assets");
+        }
+
+        public async Task<IActionResult> Statistics()
+        {
+            var model = await _assetService.GetStatistics();
+            return View(model);
+        }
+
+        private void SetShowTransferredInfo()
+        {
+            ViewBag.ShowTransferredInfo = false;
+            if (bool.TryParse(_configuration["ShowTransferredInfo"], out var showTransferredInfo))
+                ViewBag.ShowTransferredInfo = showTransferredInfo;
         }
     }
 }
