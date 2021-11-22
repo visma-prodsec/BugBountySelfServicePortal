@@ -12,5 +12,6 @@ namespace VismaBugBountySelfServicePortal.Models.Entity
         public bool IsOnHackerOne { get; set; }
         public bool IsOnPublicProgram { get; set; }
         public string Columns { get; set; }
+        public string Programs { get; set; }
     }
 }

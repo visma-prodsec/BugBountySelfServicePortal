@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VismaBugBountySelfServicePo
 EndProject
 Project("{151D2E53-A2C4-4D7D-83FE-D05416EBD58E}") = "VismaBugBountySelfServicePortal.Infrastructure", "VismaBugBountySelfServicePortal.Infrastructure\VismaBugBountySelfServicePortal.Infrastructure.deployproj", "{1A324B7E-889A-4CF9-B155-9D01E3C24B09}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VismaBugBountySelfServicePortal.Tests", "VismaBugBountySelfServicePortal.Tests\VismaBugBountySelfServicePortal.Tests.csproj", "{0DC0EF06-8801-46F5-940D-09E81C020EF1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{1A324B7E-889A-4CF9-B155-9D01E3C24B09}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1A324B7E-889A-4CF9-B155-9D01E3C24B09}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1A324B7E-889A-4CF9-B155-9D01E3C24B09}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0DC0EF06-8801-46F5-940D-09E81C020EF1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0DC0EF06-8801-46F5-940D-09E81C020EF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0DC0EF06-8801-46F5-940D-09E81C020EF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0DC0EF06-8801-46F5-940D-09E81C020EF1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

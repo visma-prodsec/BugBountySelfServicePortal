@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using VismaBugBountySelfServicePortal.Models.ViewModel;
 
 namespace VismaBugBountySelfServicePortal.Services
 {
     public interface IProviderService
     {
-        Task<bool> IsHackerInPrivateProgram(string hackerName);
-        Task<HashSet<string>> GetAssets(bool privateAssets);
+        Task<List<ProgramModel>> GetHackerProgramList(string hackerName);
+        Task<HashSet<(string Name, string Program)>> GetAssets(bool privateAssets);
     }
 }

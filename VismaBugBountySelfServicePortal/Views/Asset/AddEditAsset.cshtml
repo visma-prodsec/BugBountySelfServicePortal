@@ -15,18 +15,18 @@
 
         @Html.HiddenFor(m => m.IsNew)
         @if (Model.IsNew)
-            {
-        <div class="form-group required">
-            @Html.LabelFor(m => m.Name, new { @class = "col-1 control-label" })
-            <div class="col-sm-9">
-                @Html.TextBoxFor(m => m.Name, new { @class = "form-control col-3" })
+        {
+            <div class="form-group required">
+                @Html.LabelFor(m => m.Name, new { @class = "col-1 control-label" })
+                <div class="col-sm-9">
+                    @Html.TextBoxFor(m => m.Name, new { @class = "form-control col-3" })
+                </div>
             </div>
-        </div>
-            }
-            else
-            {
-        @Html.HiddenFor(m => m.Name)
-            }
+        }
+        else
+        {
+            @Html.HiddenFor(m => m.Name)
+        }
 
         <div class="form-group required">
             @Html.LabelFor(m => m.Description, new { @class = "col-1 control-label" })
@@ -39,6 +39,10 @@
             <div class="col-sm-9">
                 @Html.TextAreaFor(m => m.Columns, new { @class = "form-control col-6" })
             </div>
+        </div>
+        <div style="color: red;padding-bottom: 10px">
+            Note: You should not include SetId and Hacker columns, they are required and predefined. Column names are case sensitive.
+            <br />
         </div>
         <div class="form-group text-center">
             <div class="col-1 offset-1">

@@ -166,7 +166,8 @@
       "properties": {
         "Application_Type": "[parameters('appInsightsComponentNameType')]",
         "Flow_Type": "Bluefield",
-        "Request_Source": "[parameters('appInsightsComponentNameRequestSource')]"
+        "Request_Source": "[parameters('appInsightsComponentNameRequestSource')]",
+        "DisableIpMasking": true
       }
     },
     {

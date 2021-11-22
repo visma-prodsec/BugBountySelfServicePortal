@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using VismaBugBountySelfServicePortal.Models.HackerOneApi;
+using VismaBugBountySelfServicePortal.Models.ViewModel;
 
 namespace VismaBugBountySelfServicePortal.Services
 {
@@ -25,18 +26,18 @@ namespace VismaBugBountySelfServicePortal.Services
             _logger = logger;
         }
 
-        public async Task<bool> IsHackerInPrivateProgram(string hackerName)
+        public async Task<List<ProgramModel>> GetHackerProgramList(string hackerName)
         {
             var url = string.Format($"{BaseUrl}/{_configuration["UsersUrl"]}", hackerName);
             var (content, status) = await GetStringData(url, true);
             if (status != HttpStatusCode.OK)
-                return false;
+                return new List<ProgramModel>();
             var textSearch = JObject.Parse(content);
             var results = textSearch?["data"]?["relationships"]?["participating_programs"]?["data"]?.Children().ToList() ?? new List<JToken>();
-            return results.Count == 1;
+            return results.Count == 1 ? new List<ProgramModel> { new() { Id = "1", Name = "Private" } } : new List<ProgramModel>();
         }
 
-        public async Task<HashSet<string>> GetAssets(bool privateAssets)
+        public async Task<HashSet<(string Name, string Program)>> GetAssets(bool privateAssets)
         {
             var urlProgram = $"{BaseUrl}/{_configuration["ProgramsUrl"]}";
 
@@ -45,10 +46,10 @@ namespace VismaBugBountySelfServicePortal.Services
                 return null;
             var textSearch = JObject.Parse(content);
             var programId = textSearch?["data"]?.First()?["id"]?.Value<string>() ?? "";
-            if(string.IsNullOrWhiteSpace(programId))
-                return new HashSet<string>();
+            if (string.IsNullOrWhiteSpace(programId))
+                return new HashSet<(string, string)>();
             var assetsData = await GetAssetsList(programId, privateAssets);
-            return assetsData.Where(x => x.Attributes.ArchivedAt == null).Select(x => x.Attributes.AssetIdentifier).ToHashSet();
+            return assetsData.Where(x => x.Attributes.ArchivedAt == null).Select(x => (x.Attributes.AssetIdentifier, "Private")).ToHashSet();
         }
 
         private async Task<List<ScopeData>> GetAssetsList(string programId, bool privateAssets)

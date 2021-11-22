@@ -12,5 +12,6 @@ namespace VismaBugBountySelfServicePortal.Models.ViewModel
         public int Free { get; set; }
         public int Total { get; set; }
         public decimal PercentAvailable => Total == 0 ? 0 : Math.Round(100m * Free / Total, 2);
+        public string Programs { get; set; }
     }
 }

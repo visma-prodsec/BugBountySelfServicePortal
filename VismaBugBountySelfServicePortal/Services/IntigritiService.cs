@@ -9,6 +9,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 using VismaBugBountySelfServicePortal.Helpers.TokenAuth;
+using VismaBugBountySelfServicePortal.Models.Intigriti;
+using VismaBugBountySelfServicePortal.Models.ViewModel;
 
 namespace VismaBugBountySelfServicePortal.Services
 {
@@ -17,8 +19,8 @@ namespace VismaBugBountySelfServicePortal.Services
 
         private const int ConfidentialityLevelInviteOnlyId = 1;
         private const int ConfidentialityLevelApplicationId = 2;
-        private const int ConfidentialityLevelRegisteredId = 3;
-        private const int ConfidentialityLevelPublicId = 4;
+        // private const int ConfidentialityLevelRegisteredId = 3;
+        // private const int ConfidentialityLevelPublicId = 4;
         private readonly IConfiguration _configuration;
         private readonly ILogger<IntigritiService> _logger;
         private string BaseUrl => _configuration["IntigritiAPIUrl"];
@@ -61,66 +63,72 @@ namespace VismaBugBountySelfServicePortal.Services
             _configuration = configuration;
             _logger = logger;
         }
-        public async Task<bool> IsHackerInPrivateProgram(string hackerName)
+        public async Task<List<ProgramModel>> GetHackerProgramList(string hackerName)
         {
+            var hackerPrograms = new List<ProgramModel>();
             var programs = await GetPrograms();
-            foreach (var (programId, _) in programs.Where(p => p.Value == ConfidentialityLevelInviteOnlyId || p.Value == ConfidentialityLevelApplicationId))
+            foreach (var program in programs.Where(p => !p.IsPublicProgram))
             {
-                var urlProgram = $"{BaseUrl}/v1.2/programs/{programId}/researchers/{hackerName}/access";
+                var urlProgram = $"{BaseUrl}/v1.2/programs/{program.Id}/researchers/{hackerName}/access";
 
                 var (content, status) = await GetStringData(urlProgram);
                 if (status != HttpStatusCode.OK)
                 {
                     _logger.LogError($"Error on calling API to find info for: {hackerName}, status: {status}, content: {content}");
-                    return false;
+                    return new List<ProgramModel>();
                 }
 
                 var records = JObject.Parse(content);
                 if (records["canCreateSubmission"].Value<bool>())
-                    return true;
+                    hackerPrograms.Add(new ProgramModel { Id = program.Id, Name = program.Name });
             }
 
-            return false;
+            return hackerPrograms;
         }
 
-        public async Task<HashSet<string>> GetAssets(bool privateAssets)
+        public async Task<HashSet<(string Name, string Program)>> GetAssets(bool privateAssets)
         {
-            var data = new HashSet<string>();
+            var data = new HashSet<(string Name, string Program)>();
             var programs = await GetPrograms();
-            var ids = privateAssets ? new HashSet<int> { ConfidentialityLevelInviteOnlyId, ConfidentialityLevelApplicationId } : new HashSet<int> { ConfidentialityLevelPublicId, ConfidentialityLevelRegisteredId };
-            foreach (var (programId, _) in programs.Where(p => ids.Contains(p.Value)))
+
+            foreach (var program in programs.Where(p => p.IsPublicProgram == !privateAssets))
             {
-                var urlProgram = $"{BaseUrl}/v1.2/programs/{programId}";
+                var urlProgram = $"{BaseUrl}/v1.2/programs/{program.Id}";
 
                 var (content, status) = await GetStringData(urlProgram);
                 if (status != HttpStatusCode.OK)
                 {
-                    _logger.LogError($"Error on calling API to find info assets on program: {programId} {(privateAssets ? "private" : "public")}, status: {status}, content: {content}");
-                    return new HashSet<string>();
+                    _logger.LogError($"Error on calling API to find info assets on program: {program.Id} - {program.Name} {(privateAssets ? "private" : "public")}, status: {status}, content: {content}");
+                    return new HashSet<(string Name, string Program)>();
                 }
                 var records = JObject.Parse(content);
                 foreach (var domain in records["domains"])
-                foreach (var record in domain["content"])
-                    data.Add(record["endpoint"].Value<string>());
+                    foreach (var record in domain["content"])
+                        data.Add((record["endpoint"].Value<string>(), program.Name));
             }
-            
+
             return data;
         }
 
-        private async Task<Dictionary<string, int>> GetPrograms()
+        private async Task<List<IntigrityProgram>> GetPrograms()
         {
+            var ids = new HashSet<int> { ConfidentialityLevelInviteOnlyId, ConfidentialityLevelApplicationId };
             var url = $"{BaseUrl}/v1.2/programs";
             var (content, status) = await GetStringData(url);
             if (status != HttpStatusCode.OK)
             {
                 _logger.LogError($"Error on calling API to find programs, status: {status}, content: {content}");
-                return new Dictionary<string, int>();
+                return new List<IntigrityProgram>();
             }
 
             var records = JArray.Parse(content);
 
-            return records.Where(record => record["status"]["value"].Value<string>() == "Open")
-                .ToDictionary(record => record["id"].Value<string>(), record => record["confidentialityLevel"]["id"].Value<int>());
+            return records.Where(record => record["status"]["value"].Value<string>() == "Open").Select(record => new IntigrityProgram
+            {
+                Id = record["id"].Value<string>(),
+                Name = record["name"].Value<string>(),
+                IsPublicProgram = !ids.Contains(record["confidentialityLevel"]["id"].Value<int>())
+            }).ToList();
         }
         private async Task<(string Content, HttpStatusCode Status)> GetStringData(string url)
         {
