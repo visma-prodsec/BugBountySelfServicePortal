@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -18,19 +19,21 @@ namespace VismaBugBountySelfServicePortal.Services
     public class CredentialService : ICredentialService
     {
         private readonly IEmailSender _emailSender;
-        private readonly SemaphoreSlim _semaphore = new SemaphoreSlim(1, 1);
+        private readonly SemaphoreSlim _semaphore = new(1, 1);
         private readonly ILogger<CredentialService> _logger;
         private readonly IConfiguration _configuration;
         private readonly IProviderFactory _providerFactory;
         private readonly IDatabaseLayer _databaseLayer;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public CredentialService(IDatabaseLayer databaseLayer, IEmailSender emailSender, ILogger<CredentialService> logger, IConfiguration configuration, IProviderFactory providerFactory)
+        public CredentialService(IDatabaseLayer databaseLayer, IEmailSender emailSender, ILogger<CredentialService> logger, IConfiguration configuration, IProviderFactory providerFactory, IHttpContextAccessor httpContextAccessor)
         {
             _databaseLayer = databaseLayer;
             _emailSender = emailSender;
             _logger = logger;
             _configuration = configuration;
             _providerFactory = providerFactory;
+            _httpContextAccessor = httpContextAccessor;
         }
         public async Task<IEnumerable<UserCredentialViewModel>> GetCredentials(string hackerName, string hackerEmail, bool transferred)
         {
@@ -40,6 +43,8 @@ namespace VismaBugBountySelfServicePortal.Services
 
         public async Task<IEnumerable<UserCredentialViewModel>> GetCredentialsByAdmin(string hackerName)
         {
+            if (!_httpContextAccessor?.HttpContext?.User.IsInRole(Const.AdminRole) ?? false)
+                return null;
             var assets = await _databaseLayer.Repo<AssetEntity>().GetAll();
             return await GetHackerCredentials(hackerName, assets, null);
         }
@@ -100,10 +105,16 @@ namespace VismaBugBountySelfServicePortal.Services
         private async Task<IEnumerable<AssetEntity>> GetAssetsForHacker(string hackerName, string hackerEmail, string assetName = "")
         {
             var providerService = _providerFactory.GetProviderService(hackerEmail.Split('@').Last());
-            var isHackerInPrivateProgram = await providerService.IsHackerInPrivateProgram(hackerName);
-            var assets = await _databaseLayer.Repo<AssetEntity>()
-                .FindAll(x => x.IsVisible && x.IsOnHackerOne && (x.IsOnPublicProgram || isHackerInPrivateProgram)
-                                                && (string.IsNullOrWhiteSpace(assetName) || x.Key == assetName));
+            bool isOurUser = _configuration["SecurityTeamUsers"].Split(',').Any(x => x.Equals(hackerName, StringComparison.InvariantCultureIgnoreCase));
+            if (hackerName.Contains("\\") || hackerName.Contains("/") || hackerName.Contains("."))
+                return new List<AssetEntity>();
+            var hackerPrograms = (await providerService.GetHackerProgramList(hackerName)).Select(p => p.Name);
+            var assets = (await _databaseLayer.Repo<AssetEntity>()
+                .FindAll(asset => asset.IsVisible && asset.IsOnHackerOne && (string.IsNullOrWhiteSpace(assetName) || asset.Key == assetName))).ToList()
+                .Where(asset => asset.IsOnPublicProgram
+                                || isOurUser
+                                || hackerPrograms.Any(hackerProgram =>
+                                    asset.Programs?.Split(Const.DatabaseSeparator).Any(assetProgram => assetProgram.Equals(hackerProgram, StringComparison.InvariantCultureIgnoreCase)) ?? false));
             return assets;
         }
 
@@ -116,8 +127,9 @@ namespace VismaBugBountySelfServicePortal.Services
                 return $"Asset {assetName} not found.";
 
             var userCredentials = credentialRepository.DbSet.Count(c => c.AssetName == assetName && c.HackerName == hackerName && (c.Transferred ?? true));
-            if (userCredentials >= 2)
-                return $"You already have 2 sets of credentials for {assetName}. If you need more, please contact us.";
+            var limit = (!_httpContextAccessor?.HttpContext?.User.IsInRole(Const.AdminRole) ?? false) ? 2 : 4;
+            if (userCredentials >= limit)
+                return $"You already have {limit} sets of credentials for {assetName}. If you need more, please contact us.";
             IEnumerable<CredentialValueEntity> credentialsData;
 
             await _semaphore.WaitAsync();

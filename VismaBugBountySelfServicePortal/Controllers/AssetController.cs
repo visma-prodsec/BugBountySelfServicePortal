@@ -118,6 +118,13 @@ namespace VismaBugBountySelfServicePortal.Controllers
         {
             return RedirectToAction("Assets");
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult ViewAs(string viewAsName)
+        {
+            HttpContext.Session.SetString(Const.ClaimTypeHackerName, viewAsName);
+            return RedirectToAction("UserCredentials", "Credential");
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -141,18 +148,7 @@ namespace VismaBugBountySelfServicePortal.Controllers
             await _assetService.SyncAssets();
             return RedirectToAction("Assets", "Asset");
         }
-
-        [HttpPut]
-        [AllowAnonymous]
-        [Route("api/sync")]
-        public async Task<IActionResult> Sync([FromQuery] string apiKey)
-        {
-            if (string.IsNullOrWhiteSpace(apiKey) || apiKey != _configuration["ApiKey"])
-                return Unauthorized();
-            await _assetService.SyncAssets();
-            return Ok();
-        }
-
+        
         public async Task<IActionResult> UserAssetCredentials(string searchText = "")
         {
             if (string.IsNullOrWhiteSpace(searchText))
@@ -161,7 +157,7 @@ namespace VismaBugBountySelfServicePortal.Controllers
             var model = (await _credentialService.GetCredentialsByAdmin(searchText)).ToList();
             return model.FirstOrDefault(x => x.Credentials.Count > 0) == null ? View() : View(model.ToArray());
         }
-        
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteAsset(string deleteAssetId)

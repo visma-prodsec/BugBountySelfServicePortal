@@ -1,17 +1,17 @@
 ﻿function showModal(id) {
-    var element = $("#" + id);
+    var element = window.$("#" + id);
     element.addClass("in");
     element.css("display", "flex");
 }
 function showCover() {
-    $("#cover").show();
+    window.$("#cover").show();
 }
 function hideCover() {
-    $("#cover").hide();
+    window.$("#cover").hide();
 }
 function copyToClipboard(text) {
-    var $temp = $("<input>");
-    $("body").append($temp);
+    var $temp = window.$("<input>");
+    window.$("body").append($temp);
     $temp.val(text).select();
     document.execCommand("copy");
     $temp.remove();

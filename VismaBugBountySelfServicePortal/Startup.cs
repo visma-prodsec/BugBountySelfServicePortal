@@ -98,6 +98,8 @@ namespace VismaBugBountySelfServicePortal
 
             services.AddApplicationInsightsTelemetry();
             services.AddMvc(options => options.Filters.Add(new AuthorizeFilter())).SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+            services.AddDistributedMemoryCache();
+            services.AddSession();
             _apiBuilder.BuildServices(services);
         }
 
@@ -112,16 +114,17 @@ namespace VismaBugBountySelfServicePortal
             else
             {
                 app.UseExceptionHandler("/Home/Error");
-                app.UseHsts();
             }
-            //app.UseMiddleware(typeof(ExceptionHandlerMiddleware));
+           
+            app.UseHsts(o => o.MaxAge(365));
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseStatusCodePagesWithReExecute("/home/error/{0}");
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
-
+            app.UseRequestResponseLogging();
+            app.UseSession();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

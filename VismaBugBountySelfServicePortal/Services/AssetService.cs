@@ -46,7 +46,7 @@ namespace VismaBugBountySelfServicePortal.Services
 
         public async Task<IEnumerable<AssetViewModel>> GetAssets()
         {
-            var allAssets = await _assetRepository.DbSet.AsNoTracking().Select(a=>new {a.Key, a.Description, a.IsVisible, a.IsOnHackerOne, a.IsOnPublicProgram}).ToListAsync();
+            var allAssets = await _assetRepository.DbSet.AsNoTracking().Select(a => new { a.Key, a.Description, a.IsVisible, a.IsOnHackerOne, a.IsOnPublicProgram, a.Programs }).ToListAsync();
             var credentials = (await _credentialRepository.DbSet.AsNoTracking().GroupBy(c => c.AssetName)
                     .Select(x => new { x.Key, Total = x.Count(), Free = x.Count(r => string.IsNullOrWhiteSpace(r.HackerName)) }).ToListAsync())
                     .ToDictionary(k => k.Key, i => new { i.Total, i.Free });
@@ -58,6 +58,7 @@ namespace VismaBugBountySelfServicePortal.Services
                 IsVisible = asset.IsVisible,
                 IsOnHackerOne = asset.IsOnHackerOne,
                 IsOnPublicProgram = asset.IsOnPublicProgram,
+                Programs = string.IsNullOrWhiteSpace(asset.Programs) ? "" : asset.Programs.Replace(Const.DatabaseSeparator, Const.UISeparator),
                 Free = credentials.ContainsKey(asset.Key) ? credentials[asset.Key].Free : 0,
                 Total = credentials.ContainsKey(asset.Key) ? credentials[asset.Key].Total : 0
             });
@@ -200,7 +201,7 @@ namespace VismaBugBountySelfServicePortal.Services
             asset.IsVisible = isVisible;
             await _assetRepository.Update(asset);
             if (!asset.IsOnHackerOne && asset.IsVisible)
-                return ($"Asset {assetName} not found on H1, so the users will not see it. Please sync data so it is visible for users.", false);
+                return ($"Asset {assetName} not found on Bug Bounty platform, so the users will not see it. Please sync data so it is visible for users.", false);
             return (string.Empty, null);
         }
 
@@ -266,51 +267,41 @@ namespace VismaBugBountySelfServicePortal.Services
             foreach (var asset in assets)
             {
                 var assetList = asset.Key.Split(",", StringSplitOptions.RemoveEmptyEntries).Select(x => x.Trim()).ToList();
-                var update = false;
-                var privateAsset = privateHackerOneAssets.FirstOrDefault(x => assetList.Contains(x.Trim()));
-                var publicAsset = publicHackerOneAssets.FirstOrDefault(x => assetList.Contains(x.Trim()));
-                if (!string.IsNullOrWhiteSpace(privateAsset))
-                {
-                    if (!asset.IsOnHackerOne)
-                    {
-                        asset.IsOnHackerOne = true;
-                        update = true;
-                    }
 
-                    if (asset.IsOnPublicProgram)
-                    {
-                        asset.IsOnPublicProgram = false;
-                        update = true;
-                    }
-                }
-                else
-                if (!string.IsNullOrWhiteSpace(publicAsset))
+                var privateAsset = privateHackerOneAssets.Where(x => assetList.Contains(x.Name.Trim())).ToList();
+                var publicAsset = publicHackerOneAssets.Where(x => assetList.Contains(x.Name.Trim())).ToList();
+                bool? isPublic = !publicAsset.Any() && !privateAsset.Any() ? null : publicAsset.Any();
+                var newAsset = new AssetEntity
                 {
-                    if (!asset.IsOnHackerOne)
-                    {
-                        asset.IsOnHackerOne = true;
-                        update = true;
-                    }
-                    if (!asset.IsOnPublicProgram)
-                    {
-                        asset.IsOnPublicProgram = true;
-                        update = true;
-                    }
-                }
-                else if (asset.IsOnHackerOne)
-                {
-                    asset.IsOnHackerOne = false;
-                    update = true;
-                }
+                    IsOnHackerOne = isPublic.HasValue,
+                    IsOnPublicProgram = isPublic.HasValue && isPublic.Value,
+                    Programs = string.Join(Const.DatabaseSeparator, publicAsset.Select(p => p.Program).Concat(privateAsset.Select(p => p.Program)).Distinct())
+                };
 
-                if (!asset.IsOnHackerOne && asset.IsOnPublicProgram)
-                {
-                    asset.IsOnPublicProgram = false;
-                    update = true;
-                }
-                if (update)
+                if (NeedsToUpdate(newAsset, asset))
                     await _assetRepository.Update(asset);
             }
+        }
+
+        private static bool NeedsToUpdate(AssetEntity newAsset, AssetEntity asset)
+        {
+            var update = false;
+            if (asset.IsOnPublicProgram != newAsset.IsOnPublicProgram)
+            {
+                asset.IsOnPublicProgram = newAsset.IsOnPublicProgram;
+                update = true;
+            }
+            if (asset.IsOnHackerOne != newAsset.IsOnHackerOne)
+            {
+                asset.IsOnHackerOne = newAsset.IsOnHackerOne;
+                update = true;
+            }
+            if (!(asset.Programs ?? "").Equals(newAsset.Programs, StringComparison.InvariantCultureIgnoreCase))
+            {
+                asset.Programs = newAsset.Programs;
+                update = true;
+            }
+            return update;
         }
 
         private async Task<string> AddCredentialData(string assetName, List<CredentialEntity> credentials)

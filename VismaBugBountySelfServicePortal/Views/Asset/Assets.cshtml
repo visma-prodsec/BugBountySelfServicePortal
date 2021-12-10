@@ -33,6 +33,7 @@
                 <input id="syncAssets" type="submit" class="btn btn-primary" value="Sync with BB platform" onclick="showCover()" />
                 <input id="addAsset" type="button" class="btn btn-primary" value="Add" onclick="loadAsset('');return false;" />
                 <a asp-action="UserAssetCredentials" class="btn btn-primary" type="button">View User</a>
+                <input id="viewAs" type="button" class="btn btn-primary" onclick="showModal('viewAsModal'); return false;" value="Request Credentials" />
                 <a asp-action="Statistics" class="btn btn-primary" type="button">Statistics</a>
             </form>
         </div>
@@ -50,10 +51,11 @@
                     <th class="text-center">Visible</th>
                     <th class="text-center">On BB Platform</th>
                     <th class="text-center">On Public</th>
+                    <th class="text-center">Programs</th>
                     <th class="text-right">% Available</th>
                     <th class="text-right">Free</th>
                     <th class="text-right">Total</th>
-                    <th></th>
+                    <th tyle="min-width: 260px"></th>
                 </tr>
             </thead>
             @foreach (var asset in Model)
@@ -83,10 +85,11 @@
                             <label for="chk"></label>
                         </div>
                     </td>
+                    <td class="text-center">@asset.Programs</td>
                     <td class="text-right">@asset.PercentAvailable %</td>
                     <td class="text-right">@asset.Free</td>
                     <td class="text-right">@asset.Total</td>
-                    <td class="text-center">
+                    <td class="text-center" style="min-width: 250px">
                         <span class="vismaicon vismaicon-upload" title="Import Credentials" onclick='$("#selectedAssetName").val("@HttpUtility.JavaScriptStringEncode(asset.Name)");showModal("uploadModal");'></span>
                         <span class="vismaicon vismaicon-edit" title="Edit" onclick="loadAsset('@HttpUtility.JavaScriptStringEncode(asset.Name)');return false;"></span>
                         <span class="vismaicon vismaicon-list-view" title="View" onclick="viewAsset('@HttpUtility.JavaScriptStringEncode(asset.Name)');return false;"></span>
@@ -121,6 +124,33 @@
         </div>
     </div>
 </div>
+<div id="viewAsModal" class="modal">
+    <div class="modal-dialog">
+        <div>
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" onclick='$("#viewAsModal").hide()'></button>
+                <h4 class="modal-title">Request Credentials</h4>
+            </div>
+            <div class="modal-body">
+                <form method="post" asp-controller="Asset" asp-action="ViewAs" asp-antiforgery="true">
+                    <div class="form-group">
+                        <div class="col-sm-10">
+                            <span>You can request credentials for DAST, PSOC, PUSOC or a researcher.</span>
+                        </div>
+                        <div class="col-sm-7">
+                            <label for="viewAsName">Researcher name: </label>
+                            <input type="text" id="viewAsName" name="viewAsName" class="form-control" />
+                        </div>
+                        <div class="offset-7 col-md-5">
+                            <br />
+                            <input type="submit" title="View" value="View" class="btn btn-primary" onclick="showCover()" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 <div id="uploadModal" class="modal">
     <div class="modal-dialog">
         <div>
@@ -138,6 +168,10 @@
                             <input type="file" id="postedFile" name="postedFile" class="form-control" accept=".csv" />
                         </div>
                     </div>
+                    <div style="color: red;padding-bottom: 10px">
+                        Note: Check that you have SetId and Hacker columns, they are required. SetId should be populated.
+                        <br />Column names are case sensitive.
+                    </div>
                     <div class="form-group">
                         <div class="offset-3 col-md-5">
                             <br />
@@ -151,7 +185,7 @@
 </div>
 <script type="text/javascript">
     function showDeletePopup(assetName, modalId) {
-        $("#deleteAssetId").val(assetName);
+        window.$("#deleteAssetId").val(assetName);
         showModal(modalId);
     }
 
@@ -163,8 +197,8 @@
     }
     function searchAsset(text) {
         var searchText = text.toLowerCase();
-        $("tr[for='filter']").each(function (i, element) {
-            var e = $(element);
+        window.$("tr[for='filter']").each(function (i, element) {
+            var e = window.$(element);
             if (e.attr("id").toLowerCase().includes(searchText) || e.attr("name").toLowerCase().includes(searchText)) {
                 e.show();
             }

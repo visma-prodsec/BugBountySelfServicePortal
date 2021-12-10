@@ -15,13 +15,11 @@ namespace VismaBugBountySelfServicePortal.Controllers
     {
         private readonly IDataSeeder _dataSeeder;
         private readonly ILogger<CommonController> _logger;
-        private readonly IConfiguration _configuration;
 
-        public CommonController(IDataSeeder seeder, ILogger<CommonController> logger, IConfiguration configuration)
+        public CommonController(IDataSeeder seeder, ILogger<CommonController> logger, IConfiguration configuration): base(configuration)
         {
             _dataSeeder = seeder;
             _logger = logger;
-            _configuration = configuration;
         }
 
         /// <summary>
@@ -41,9 +39,9 @@ namespace VismaBugBountySelfServicePortal.Controllers
         [AllowAnonymous]
         [Route("migrate")]
         [ApiExplorerSettings(IgnoreApi = true)]
-        public async Task<ActionResult> Migrate([FromQuery] string apiKey)
+        public async Task<ActionResult> Migrate()
         {
-            if (string.IsNullOrWhiteSpace(apiKey) || apiKey != _configuration["ApiKey"])
+            if (!ValidateApiKey())
                 return Unauthorized();
             _logger.LogInformation("Migrating...");
             await _dataSeeder.MigrateDatabase();
@@ -56,9 +54,9 @@ namespace VismaBugBountySelfServicePortal.Controllers
         [AllowAnonymous]
         [Route("seed")]
         [ApiExplorerSettings(IgnoreApi = true)]
-        public async Task<ActionResult> Seed([FromQuery] string apiKey)
+        public async Task<ActionResult> Seed()
         {
-            if (string.IsNullOrWhiteSpace(apiKey) || apiKey != _configuration["ApiKey"])
+            if (!ValidateApiKey())
                 return Unauthorized();
             _logger.LogInformation("Seeding...");
             await _dataSeeder.LoadSeed();

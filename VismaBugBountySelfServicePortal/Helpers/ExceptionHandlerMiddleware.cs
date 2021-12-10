@@ -21,7 +21,7 @@ namespace VismaBugBountySelfServicePortal.Helpers
         private readonly RequestDelegate _next;
         private readonly IActionResultExecutor<ObjectResult> _executor;
         private readonly ILogger _logger;
-        private static readonly ActionDescriptor EmptyActionDescriptor = new ActionDescriptor();
+        private static readonly ActionDescriptor EmptyActionDescriptor = new();
 
         public ExceptionHandlerMiddleware(RequestDelegate next, IActionResultExecutor<ObjectResult> executor, ILogger<ExceptionHandlerMiddleware> logger)
         {

@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using VismaBugBountySelfServicePortal.Base;
@@ -10,13 +11,37 @@ using VismaBugBountySelfServicePortal.Services;
 
 namespace VismaBugBountySelfServicePortal.Controllers
 {
-    [Authorize(Roles = Const.HackerRole)]
+    [Authorize]
     public class CredentialController : BaseController
     {
         private readonly ICredentialService _credentialService;
         private readonly IConfiguration _configuration;
-        private string HackerName => User.Claims.FirstOrDefault(x => x.Type == Const.ClaimTypeHackerName)?.Value ?? "";
-        private string HackerEmail => User.Claims.GetEmail();
+        private string HackerName
+        {
+            get
+            {
+                var hackerName = HttpContext.Session.GetString(Const.ClaimTypeHackerName);
+                if (!string.IsNullOrWhiteSpace(hackerName) && User.IsInRole(Const.AdminRole))
+                {
+                    ViewBag.HackerName = hackerName;
+                    return hackerName;
+                }
+
+                return User.Claims.FirstOrDefault(x => x.Type == Const.ClaimTypeHackerName)?.Value ?? "";
+            }
+        }
+
+        private string HackerEmail
+        {
+            get
+            {
+                var hackerName = HttpContext.Session.GetString(Const.ClaimTypeHackerName);
+                if (!string.IsNullOrWhiteSpace(hackerName) && User.IsInRole(Const.AdminRole))
+                    return $"{hackerName}@{_configuration["ProviderEmailDomain"]}";
+                return User.Claims.GetEmail();
+            }
+        }
+
         private bool IsObsoleteUserDomain => User.HasClaim(c => c.Type == Const.ClaimTypeObsoleteDomain);
 
         public CredentialController(ICredentialService credentialService, IConfiguration configuration)
